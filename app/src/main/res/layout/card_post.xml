@@ -144,7 +144,7 @@
             android:id="@+id/videoImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/video"
+            android:src="@drawable/baseline_play_arrow_24"
             android:layout_gravity="center"/>
     </FrameLayout>
 
