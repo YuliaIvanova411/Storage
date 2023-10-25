@@ -15,5 +15,6 @@
     <string name="chooser_share_post">Отправить пост</string>
     <string name="error_empty_content">Поле не может быть пустым</string>
     <string name="new_post">Новый пост</string>
+    <string name="cancel">Отменить</string>
 
 </resources>

@@ -16,5 +16,6 @@
     <string name="error_empty_content">Content can\'t be empty</string>
     <string name="title_activity_intent_handler" translatable="false">IntentHandlerActivity</string>
     <string name="new_post">new post</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
