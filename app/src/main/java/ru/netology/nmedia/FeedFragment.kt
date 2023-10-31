@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.adapter.PostListener
@@ -18,9 +20,7 @@ import ru.netology.nmedia.viewmodel.PostViewModel
 
 class FeedFragment : Fragment() {
 
-    val viewModel: PostViewModel by viewModels(
-        ownerProducer = ::requireParentFragment
-    )
+    val viewModel: PostViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,14 +28,6 @@ class FeedFragment : Fragment() {
     ): View {
 
         val feedFragmentBinding = FragmentFeedBinding.inflate(layoutInflater, container, false)
-
-
-
-//        val editPostContract = registerForActivityResult(EditPostActivity.Contract) { result ->
-//            result ?: return@registerForActivityResult
-//            viewModel.changeContent(result)
-//            viewModel.save()
-//        }
 
         val adapter = PostAdapter(
             object : PostListener {
@@ -45,7 +37,11 @@ class FeedFragment : Fragment() {
 
                 override fun onEdit(post: Post) {
                     viewModel.edit(post)
-                    // editPostContract.launch(post.content)
+                    val text = post.content
+                    val bundle = Bundle()
+                    bundle.putString("editedText", text)
+                    findNavController().navigate(R.id.action_feedFragment_to_editPostFragment)
+
                 }
 
 
@@ -81,6 +77,7 @@ class FeedFragment : Fragment() {
             findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
 
         }
+
         return feedFragmentBinding.root
     }
 

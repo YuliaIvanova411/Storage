@@ -68,7 +68,7 @@ class PostRepositoryInFile(
         if (newPost.id == 0L) {
             post = listOf(
                 newPost.copy(
-                    id = (post.firstOrNull()?.id ?: 0L) + 1,
+                    id = nextId++,
                     author = "Me",
                     likedByMe = false,
                     published = "Now",

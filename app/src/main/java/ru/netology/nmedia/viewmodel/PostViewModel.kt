@@ -6,6 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.repository.PostRepository
 import androidx.lifecycle.*
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import androidx.navigation.fragment.findNavController
+import ru.netology.nmedia.EditPostFragment
+import ru.netology.nmedia.FeedFragment
+import ru.netology.nmedia.R
 import ru.netology.nmedia.repository.PostRepositoryInFile
 
 private val empty = Post(
@@ -38,6 +43,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     fun edit(post: Post){
         edited.value = post
+
     }
 
     fun changeContent(content: String){

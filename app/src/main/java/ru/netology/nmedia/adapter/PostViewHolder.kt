@@ -3,10 +3,12 @@ package ru.netology.nmedia.adapter
 import android.net.Uri
 import android.view.View
 import android.widget.PopupMenu
+import androidx.navigation.fragment.NavHostFragment
 
 
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import kotlinx.coroutines.NonCancellable.start
+import ru.netology.nmedia.FeedFragment
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.dto.Post

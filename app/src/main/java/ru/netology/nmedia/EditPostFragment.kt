@@ -1,11 +1,14 @@
 package ru.netology.nmedia
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.databinding.EditPostFragmentBinding
@@ -18,9 +21,7 @@ class EditPostFragment : Fragment() {
         var Bundle.edit: String? by StringArg
     }
 
-    private val viewModel: PostViewModel by viewModels(
-        ownerProducer = ::requireParentFragment
-    )
+    private val viewModel: PostViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,7 +32,7 @@ class EditPostFragment : Fragment() {
         arguments?.edit?.let(binding.content::setText)
         binding.content.setText(arguments?.getString("editedText"))
 
-        //binding.content.setText(intent?.getStringExtra(Intent.EXTRA_TEXT))
+       // binding.content.setText(intent.getStringExtra(Intent.EXTRA_TEXT))
         binding.ok.setOnClickListener {
             val text = binding.content.text.toString()
             if (text.isBlank()) {
@@ -53,6 +54,7 @@ class EditPostFragment : Fragment() {
             findNavController().navigateUp()
         }
 
+
         return binding.root
     }
 }
@@ -66,7 +68,6 @@ class EditPostFragment : Fragment() {
 //            }
 //        )
 
-//    }
 //    object Contract : ActivityResultContract<String, String?>() {
 //        override fun createIntent(context: Context, input: String) =
 //            Intent(context, EditPostActivity ::class.java).putExtra(Intent.EXTRA_TEXT, input)
