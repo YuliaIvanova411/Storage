@@ -11,7 +11,9 @@ import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.EditPostFragment
 import ru.netology.nmedia.FeedFragment
 import ru.netology.nmedia.R
+import ru.netology.nmedia.db.AppDb
 import ru.netology.nmedia.repository.PostRepositoryInFile
+import ru.netology.nmedia.repository.PostRepositorySQLiteImpl
 
 private val empty = Post(
     id = 0,
@@ -24,9 +26,10 @@ private val empty = Post(
 )
 
 class PostViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository : PostRepository = PostRepositoryInFile(application)
-
-    val data:LiveData<List<Post>> = repository.getData()
+    private val repository : PostRepository = PostRepositorySQLiteImpl(
+        AppDb.getInstance(application).postDao
+    )
+    val data = repository.getData()
 
     val edited = MutableLiveData(empty)
     fun likeById(id:Long) = repository.likeById(id)
