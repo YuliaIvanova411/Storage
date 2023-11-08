@@ -17,5 +17,9 @@
     <string name="title_activity_intent_handler" translatable="false">IntentHandlerActivity</string>
     <string name="new_post">new post</string>
     <string name="cancel">Cancel</string>
+    <string name="channel_remote_name">Server notifications</string>
+    <string name="channel_remote_description">Notification from remote server</string>
+    <string name="notification_user_liked">User %1$s liked %2$s\'s post</string>
+
 
 </resources>

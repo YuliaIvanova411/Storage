@@ -16,5 +16,8 @@
     <string name="error_empty_content">Поле не может быть пустым</string>
     <string name="new_post">Новый пост</string>
     <string name="cancel">Отменить</string>
+    <string name="channel_remote_name">Уведомление сервера</string>
+    <string name="channel_remote_description">Уведомление с удаленного сервера</string>
+    <string name="notification_user_liked">%1$s поставил лайк посту %2$s</string>
 
 </resources>
