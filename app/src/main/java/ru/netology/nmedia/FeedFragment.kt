@@ -63,6 +63,7 @@ class FeedFragment : Fragment() {
                     val startIntent =
                         Intent.createChooser(intent, getString(R.string.chooser_share_post))
                     startActivity(startIntent)
+                    viewModel.shareById(post.id)
                 }
 
             }
