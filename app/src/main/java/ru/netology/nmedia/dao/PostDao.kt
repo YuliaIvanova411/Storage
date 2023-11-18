@@ -15,6 +15,9 @@ interface PostDao {
         @Insert
         fun insert(post: PostEntity)
 
+        @Insert
+        fun insert(posts: List<PostEntity>)
+
         @Query("UPDATE PostEntity SET content = :text WHERE id = :id")
         fun updateContentById(id: Long, text: String)
 

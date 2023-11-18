@@ -6,10 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.adapter.PostListener
@@ -52,6 +51,7 @@ class FeedFragment : Fragment() {
 
                 override fun onLike(post: Post) {
                     viewModel.likeById(post.id)
+
                 }
 
                 override fun onShare(post: Post) {
@@ -64,14 +64,25 @@ class FeedFragment : Fragment() {
                         Intent.createChooser(intent, getString(R.string.chooser_share_post))
                     startActivity(startIntent)
                     viewModel.shareById(post.id)
+
                 }
 
             }
 
         )
         feedFragmentBinding.list.adapter = adapter
-        viewModel.data.observe(viewLifecycleOwner) { posts ->
-            adapter.submitList(posts)
+        viewModel.data.observe(viewLifecycleOwner) { state ->
+            adapter.submitList(state.posts)
+            feedFragmentBinding.progress?.isVisible = state.loading
+            feedFragmentBinding.errorGroup?.isVisible = state.error
+            feedFragmentBinding.emptyText?.isVisible = state.empty
+        }
+
+        feedFragmentBinding.retryButton?.setOnClickListener {
+            viewModel.loadPosts()
+        }
+        feedFragmentBinding.swipeRefresh?.setOnRefreshListener {
+            viewModel.loadPosts()
         }
 
         feedFragmentBinding.add.setOnClickListener {

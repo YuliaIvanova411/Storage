@@ -48,9 +48,14 @@ class EditPostFragment : Fragment() {
                 AndroidUtils.hideKeyboard(requireView())
                 findNavController().navigateUp()
             }
+            viewModel.postCreated.observe(viewLifecycleOwner) {
+                viewModel.loadPosts()
+                findNavController().navigateUp()
+            }
         }
         binding.cancelButton.setOnClickListener {
             AndroidUtils.hideKeyboard(requireView())
+            viewModel.clearEdit()
             findNavController().navigateUp()
         }
 

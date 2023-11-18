@@ -16,5 +16,12 @@
     <string name="error_empty_content">Поле не может быть пустым</string>
     <string name="new_post">Новый пост</string>
     <string name="cancel">Отменить</string>
+    <string name="channel_remote_name" >Уведомления сервера</string>
+    <string name="channel_remote_description">Уведомления с удаленного сервера</string>
+    <string name="notification_user_liked">Пользователю %1$s понравился %2$s\\\'s пост</string>
+    <string name="google_play_unavailable">Гугл сервисы недоступны</string>
+    <string name="error_loading">Что-то пошло не так. Попробуйте еще раз</string>
+    <string name="retry_loading">Еще раз!</string>
+    <string name="empty_posts">Постов совсем нет. Но если вы что-то напишете, они появятся</string>
 
 </resources>

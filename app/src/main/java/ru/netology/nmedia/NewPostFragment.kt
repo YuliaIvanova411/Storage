@@ -44,6 +44,10 @@ class NewPostFragment : Fragment() {
                 viewModel.save()
                 findNavController().navigateUp()
             }
+            viewModel.postCreated.observe(viewLifecycleOwner) {
+                viewModel.loadPosts()
+                findNavController().navigateUp()
+            }
 
 
         }
@@ -56,11 +60,4 @@ class NewPostFragment : Fragment() {
         return binding.root
     }
 
-//    object Contract : ActivityResultContract<Unit, String?>() {
-//        override fun createIntent(context: Context, input: Unit) =
-//            Intent(context, NewPostActivity ::class.java)
-//
-//        override fun parseResult(resultCode: Int, intent: Intent?) = intent?.getStringExtra(Intent.EXTRA_TEXT)
-//
-//    }
 }
