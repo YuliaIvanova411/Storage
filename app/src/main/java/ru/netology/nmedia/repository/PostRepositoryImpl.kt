@@ -63,7 +63,19 @@ class PostRepositoryImpl: PostRepository {
                 gson.fromJson(it, Post::class.java)
             }
     }
+    override fun dislikeById(id: Long) : Post {
+        val requestUnlike: Request = Request.Builder()
+            .delete()
+            .url("${BASE_URL}/api/slow/posts/$id/likes")
+            .build()
 
+        return client.newCall(requestUnlike)
+            .execute()
+            .let { it.body?.string() ?: throw RuntimeException("body is null") }
+            .let {
+                gson.fromJson(it, Post::class.java)
+            }
+    }
 
     override fun shareById(id: Long) {
 
