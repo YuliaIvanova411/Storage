@@ -55,90 +55,90 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     fun likeById(id: Long) {
         thread {
+            val post = repository.getById(id)
+            val updatedPost = if (post.likedByMe) repository.dislikeById(id)
+            else repository.likeById(id)
+            _data.postValue(
+                FeedModel(posts =
+                _data.value!!.posts.map {
+                    if (post.id == it.id) updatedPost else it
+                })
+            )
+
+        }
+    }
+
+        fun shareById(id: Long) {
             _data.postValue(
                 FeedModel(posts =
                 _data.value!!.posts.map { post ->
                     if (post.id == id) {
                         post.copy(
-                            likes = if (post.likedByMe) post.likes - 1 else post.likes + 1,
-                            likedByMe = !post.likedByMe
+                            share = post.share + 1
                         )
                     } else {
                         post
                     }
                 })
             )
-            repository.likeById(id) }
-    }
 
-    fun shareById(id: Long) {
-        _data.postValue(
-            FeedModel(posts =
-            _data.value!!.posts.map { post ->
-                if (post.id == id) {
-                    post.copy(
-                        share = post.share + 1
-                    )
-                } else {
-                    post
-                }
-            })
-        )
+            repository.shareById(id)
 
-     repository.shareById(id)
-
-    }
-    fun removeById(id: Long) {
-        thread {
-            // Оптимистичная модель
-            val old = _data.value?.posts.orEmpty()
-            _data.postValue(
-                _data.value?.copy(posts = _data.value?.posts.orEmpty()
-                    .filter { it.id != id }
-                )
-            )
-            try {
-                repository.removeById(id)
-            } catch (e: IOException) {
-                _data.postValue(_data.value?.copy(posts = old))
-            }
         }
-    }
 
-
-    fun save() {
-        edited.value?.let {
+        fun removeById(id: Long) {
             thread {
-                repository.save(it)
-                _postCreated.postValue(Unit)
+                // Оптимистичная модель
+                val old = _data.value?.posts.orEmpty()
+                _data.postValue(
+                    _data.value?.copy(posts = _data.value?.posts.orEmpty()
+                        .filter { it.id != id }
+                    )
+                )
+                try {
+                    repository.removeById(id)
+                } catch (e: IOException) {
+                    _data.postValue(_data.value?.copy(posts = old))
+                }
             }
         }
-        edited.value = empty
 
-    }
 
-    fun edit(post: Post) {
-        edited.value = post
+        fun save() {
+            edited.value?.let {
+                thread {
+                    repository.save(it)
+                    _postCreated.postValue(Unit)
+                }
+            }
+            edited.value = empty
 
-    }
-
-    fun changeContent(content: String) {
-        val text = content.trim()
-        if (edited.value?.content == text) {
-            return
         }
-        edited.value = edited.value?.copy(content = text)
-    }
 
-    fun clearEdit() {
-        edited.value = empty
+        fun edit(post: Post) {
+            edited.value = post
 
-    }
-    fun getById(id: Long) {
-        thread {
-            repository.getById(id)
+        }
+
+        fun changeContent(content: String) {
+            val text = content.trim()
+            if (edited.value?.content == text) {
+                return
+            }
+            edited.value = edited.value?.copy(content = text)
+        }
+
+        fun clearEdit() {
+            edited.value = empty
+
+        }
+
+        fun getById(id: Long) {
+            thread {
+                repository.getById(id)
+            }
         }
     }
-}
+
 
 
