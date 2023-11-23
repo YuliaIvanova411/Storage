@@ -130,7 +130,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 //
 //    }
     fun removeById(id: Long) {
-    val old = _data.value?.posts.orEmpty()
+    //val old = _data.value?.posts.orEmpty()
        repository.removeByIdAsync(id, object : PostRepository.RepositoryCallback<Unit> {
 
            override fun onError() {
@@ -143,7 +143,8 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                    )
 
                } catch (e: IOException) {
-                   _data.postValue(_data.value?.copy(posts = old))
+                   _data.postValue(FeedModel(error = true))
+               //_data.postValue(_data.value?.copy(posts = old))
                }
            }
         })
