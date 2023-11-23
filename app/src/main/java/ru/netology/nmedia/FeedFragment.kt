@@ -50,22 +50,22 @@ class FeedFragment : Fragment() {
                 }
 
                 override fun onLike(post: Post) {
-                    viewModel.likeById(post.id)
+                    viewModel.like(post.id)
 
                 }
 
-                override fun onShare(post: Post) {
-                    val intent = Intent().apply {
-                        action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_TEXT, post.content)
-                        type = "text/plain"
-                    }
-                    val startIntent =
-                        Intent.createChooser(intent, getString(R.string.chooser_share_post))
-                    startActivity(startIntent)
-                    viewModel.shareById(post.id)
-
-                }
+//                override fun onShare(post: Post) {
+//                    val intent = Intent().apply {
+//                        action = Intent.ACTION_SEND
+//                        putExtra(Intent.EXTRA_TEXT, post.content)
+//                        type = "text/plain"
+//                    }
+//                    val startIntent =
+//                        Intent.createChooser(intent, getString(R.string.chooser_share_post))
+//                    startActivity(startIntent)
+//                    viewModel.shareById(post.id)
+//
+//                }
 
             }
 

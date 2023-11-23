@@ -18,7 +18,7 @@ interface PostListener {
     fun onEdit (post: Post)
     fun onLike (post: Post)
 
-    fun onShare (post: Post)
+   // fun onShare (post: Post)
 
     fun onPlay(post: Post)
 }
@@ -66,9 +66,9 @@ class PostViewHolder(
                 listener.onLike(post)
             }
 
-            share.setOnClickListener {
-                listener.onShare(post)
-            }
+//            share.setOnClickListener {
+//                listener.onShare(post)
+//            }
 
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
