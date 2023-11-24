@@ -54,15 +54,8 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
     fun like(id : Long) {
 
-        repository.getByIdAsync(id, object : PostRepository.RepositoryCallback<Post> {
-            override fun onError() {
-                _data.postValue(FeedModel(error = true))
-            }
-
-            override fun onSuccess(post: Post) {
-                if (post.likedByMe) disLikeById(id) else likeById(id)
-            }
-        })
+        val post = data.value?.posts?.find { it.id == id } ?: return
+        if (post.likedByMe) disLikeById(id) else likeById(id)
     }
 
     fun likeById(id: Long) {
@@ -96,13 +89,13 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             override fun onSuccess(value: Post) {
                 _data.postValue(
                     FeedModel(posts =
-                    _data.value!!.posts.map {
+                    _data.value?.posts?.map {
                         if (value.id == it.id) {
-                            value.copy(likedByMe = false, likes = value.likes - 1)
+                            value
                         } else {
                             it
                         }
-                    })
+                    } ?: emptyList())
                 )
             }
 
