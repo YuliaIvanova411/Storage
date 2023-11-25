@@ -1,13 +1,11 @@
 package ru.netology.nmedia
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.databinding.FragmentNewPostBinding
 import ru.netology.nmedia.utils.AndroidUtils
@@ -37,6 +35,7 @@ class NewPostFragment : Fragment() {
         //val intent = Intent()
         //binding.content.setText(intent.getStringExtra(Intent.EXTRA_TEXT))
         binding.ok.setOnClickListener {
+
             val text = binding.content.text.toString()
             if (!text.isBlank()){
                 val content = binding.content.text.toString()

@@ -1,17 +1,14 @@
 package ru.netology.nmedia.adapter
 
-import android.net.Uri
+
 import android.view.View
 import android.widget.PopupMenu
-import androidx.navigation.fragment.NavHostFragment
-
-
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import kotlinx.coroutines.NonCancellable.start
-import ru.netology.nmedia.FeedFragment
+import com.bumptech.glide.Glide
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.holder.load
 
 interface PostListener {
     fun onRemove(post: Post)
@@ -27,6 +24,8 @@ class PostViewHolder(
     private val binding: CardPostBinding,
     private val listener: PostListener,
 ) : ViewHolder(binding.root) {
+
+
     fun count(number: Long) = when (number) {
         in 0..999 -> number.toString()
         in 1000..9_999
@@ -49,6 +48,11 @@ class PostViewHolder(
             like.isChecked = post.likedByMe
             like.text = (count(post.likes))
             share.text = (count(post.share))
+
+
+            val url = "http://10.0.2.2:9999/avatars/${post.authorAvatar}"
+
+            binding.avatar.load(url)
 
             if(post.videoLink != null) {
                 videoLayout.visibility = View.VISIBLE
