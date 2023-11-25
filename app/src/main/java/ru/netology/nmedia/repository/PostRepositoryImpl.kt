@@ -149,7 +149,7 @@ class PostRepositoryImpl: PostRepository {
     override fun dislikeByIdAsync(id: Long, callback: PostRepository.RepositoryCallback<Post>) {
         val request: Request = Request.Builder()
             .delete()
-            .url("${BASE_URL}/api/posts/$id/likes")
+            .url("${BASE_URL}/api/slow/posts/$id/likes")
             .build()
 
         client.newCall(request)
