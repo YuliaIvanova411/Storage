@@ -12,8 +12,8 @@ import java.io.IOException
 
 private val empty = Post(
     id = 0,
-    author = "",
-    authorAvatar = "",
+    author = "Me",
+    authorAvatar = "netology.jpg",
     content = "",
     published = "",
     likes = 0,
