@@ -23,5 +23,6 @@
     <string name="error_loading">Что-то пошло не так. Попробуйте еще раз</string>
     <string name="retry_loading">Еще раз!</string>
     <string name="empty_posts">Постов совсем нет. Но если вы что-то напишете, они появятся</string>
+    <string name="no_internet">Интернет пропал совсем</string>
 
 </resources>

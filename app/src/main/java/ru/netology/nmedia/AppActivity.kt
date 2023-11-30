@@ -10,9 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.material.snackbar.BaseTransientBottomBar
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
+import ru.netology.nmedia.EditPostFragment.Companion.edit
 import ru.netology.nmedia.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.databinding.ActivityAppBinding
 
@@ -39,6 +38,12 @@ class AppActivity : AppCompatActivity() {
                     textArg = text
                 }
                 )
+            findNavController(R.id.nav_host_fragment).navigate(
+                R.id.action_feedFragment_to_editPostFragment,
+                Bundle().apply {
+                    edit = text
+                }
+            )
         }
             checkGoogleApiAvailability()
         }
