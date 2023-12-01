@@ -44,7 +44,7 @@ class PostRepositoryImpl : PostRepository {
                 }
                 callback.onSuccess(response.body() ?: throw RuntimeException("body is null"))
             }
-            override fun onFailure(call: retrofit2.Call<Post>, t: Throwable) {
+            override fun onFailure(call: Call<Post>, t: Throwable) {
                 callback.onError(ConnectException("There is no Internet at all"))
             }
         })

@@ -77,6 +77,7 @@ class FeedFragment : Fragment() {
             feedFragmentBinding.errorGroup?.isVisible = state.error
             feedFragmentBinding.emptyText?.isVisible = state.empty
             feedFragmentBinding.internetErrorGroup?.isVisible = state.connectError
+            feedFragmentBinding.swipeRefresh?.isRefreshing = state.loading
         }
 
         feedFragmentBinding.retryButton?.setOnClickListener {
