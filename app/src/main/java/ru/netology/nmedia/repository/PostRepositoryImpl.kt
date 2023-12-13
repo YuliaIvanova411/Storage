@@ -1,291 +1,124 @@
 package ru.netology.nmedia.repository
 
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import ru.netology.nmedia.api.ApiService
+import ru.netology.nmedia.dao.PostDao
 import ru.netology.nmedia.dto.Post
-import java.net.ConnectException
+import ru.netology.nmedia.entity.PostEntity
+import ru.netology.nmedia.entity.toDto
+import ru.netology.nmedia.entity.toEntity
+import ru.netology.nmedia.error.ApiError
+import ru.netology.nmedia.error.NetworkError
+import ru.netology.nmedia.error.UnknownAppError
+import java.io.IOException
 
-class PostRepositoryImpl : PostRepository {
+class PostRepositoryImpl(private val dao: PostDao) : PostRepository {
+    override val data: LiveData<List<Post>> = dao.getAll().map(List<PostEntity>::toDto)
 
-    override fun getAllAsync(callback: PostRepository.RepositoryCallback<List<Post>>) {
-        ApiService.api
-            .getAll()
-            .enqueue(object : Callback<List<Post>> {
-                override fun onResponse(call: Call<List<Post>>, response: Response<List<Post>>) {
-                    if (!response.isSuccessful) {
-                        callback.onError(RuntimeException(response.errorBody()?.string()))
-                        return
-                    }
-                    val posts = response.body()
+    override suspend fun getAll() {
+        try {
+            val response = ApiService.api.getAll()
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
 
-                    if (posts == null) {
-                        callback.onError(RuntimeException("Body is empty"))
-                        return
-                    }
-                    callback.onSuccess(posts)
-                }
-
-                override fun onFailure(call: Call<List<Post>>, t: Throwable) {
-                    callback.onError(ConnectException("There is no Internet at all"))
-                }
-            })
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            dao.insert(body.toEntity())
+        } catch (e : IOException) {
+            throw NetworkError
+        } catch (e : Exception) {
+            throw UnknownAppError
+        }
     }
 
 
 
-    override fun saveAsync(post: Post, callback: PostRepository.RepositoryCallback<Post>) {
-        ApiService.api.save(post).enqueue(object : Callback<Post> {
-            override fun onResponse(call: Call<Post>, response: Response<Post>) {
-                if (!response.isSuccessful) {
-                    callback.onError(RuntimeException("${response.message()} \n${response.code()}"))
-                    return
-                }
-                callback.onSuccess(response.body() ?: throw RuntimeException("body is null"))
+
+    override suspend fun save(post: Post) {
+        try {
+            val response = ApiService.api.save(post)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
             }
-            override fun onFailure(call: Call<Post>, t: Throwable) {
-                callback.onError(ConnectException("There is no Internet at all"))
-            }
-        })
+
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            dao.insert(PostEntity.fromDto(body))
+        } catch (e : IOException) {
+            throw NetworkError
+        } catch (e : Exception) {
+            throw UnknownAppError
+        }
     }
 
-    override fun removeByIdAsync(id: Long, callback: PostRepository.RepositoryCallback<Unit>) {
-        ApiService.api.removeById(id).enqueue(object : Callback<Unit> {
-            override fun onResponse(
-                call: Call<Unit>,
-                response: Response<Unit>
-            ) {
-                if (!response.isSuccessful) {
-                    callback.onError(RuntimeException("${response.message()}\n${response.code()}"))
-                    return
-                }
-
-                callback.onSuccess(value = Unit)
-
+    override suspend fun removeById(id: Long) {
+        try {
+            val response = ApiService.api.removeById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
             }
 
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                callback.onError(ConnectException("There is no Internet at all"))
-            }
-
-        })
+            dao.removeById(id)
+        } catch (e : IOException) {
+            throw NetworkError
+        } catch (e : Exception) {
+            throw UnknownAppError
+        }
     }
 
 
-    override fun likeByIdAsync(id: Long, callback: PostRepository.RepositoryCallback<Post>) {
-        ApiService.api.likeById(id).enqueue(object : Callback<Post> {
-            override fun onResponse(
-                call: Call<Post>,
-                response: Response<Post>
-            ) {
-                if (!response.isSuccessful) {
-                    callback.onError(RuntimeException("${response.message()}\n${response.code()}"))
-                    return
-                }
-
-                callback.onSuccess(response.body() ?: throw RuntimeException("body is null"))
-
-            }
-            override fun onFailure(call: Call<Post>, t: Throwable) {
-                callback.onError(ConnectException("There is no Internet at all"))
+    override suspend fun likeById(id: Long) {
+        try {
+            val response = ApiService.api.likeById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
             }
 
-        })
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            dao.likeById(body.id)
+        } catch (e : IOException) {
+            throw NetworkError
+        } catch (e : Exception) {
+            throw UnknownAppError
+        }
+    }
+
+    override suspend fun dislikeById(id: Long) {
+        try {
+            val response = ApiService.api.dislikeById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            dao.likeById(body.id)
+        } catch (e : IOException) {
+            throw NetworkError
+        } catch (e : Exception) {
+            throw UnknownAppError
+        }
     }
 
 
-    override fun dislikeByIdAsync(id: Long, callback: PostRepository.RepositoryCallback<Post>) {
-        ApiService.api.dislikeById(id).enqueue(object : Callback<Post> {
-            override fun onResponse(
-                call: Call<Post>,
-                response: Response<Post>
-            ) {
-                if (!response.isSuccessful) {
-                    callback.onError(RuntimeException("${response.message()}\n${response.code()}"))
-                    return
-                }
 
-                callback.onSuccess(response.body() ?: throw RuntimeException("body is null"))
-
+    override suspend fun getById(id: Long) {
+        try {
+            val response = ApiService.api.getById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
             }
 
-            override fun onFailure(call: Call<Post>, t: Throwable) {
-                callback.onError(ConnectException("There is no Internet at all"))
-            }
-
-        })
-    }
-    override fun getByIdAsync(id: Long,  callback: PostRepository.RepositoryCallback<Post>) {
-        ApiService.api.getById(id).enqueue(object :Callback<Post> {
-            override fun onResponse(
-                call: Call<Post>,
-                response: Response<Post>
-            ) {
-                if (!response.isSuccessful) {
-                    callback.onError(RuntimeException("${response.message()}\n${response.code()}"))
-                    return
-                }
-
-                callback.onSuccess(response.body() ?: throw RuntimeException("body is null"))
-
-            }
-
-            override fun onFailure(call: Call<Post>, t: Throwable) {
-                callback.onError(ConnectException("There is no Internet at all"))
-            }
-
-        })
+            dao.getById(id)
+        } catch (e : IOException) {
+            throw NetworkError
+        } catch (e : Exception) {
+            throw UnknownAppError
+        }
     }
 
   }
 
 
-//            }
-//        val request: Request = Request.Builder()
-//            .url("${BASE_URL}/api/slow/posts")
-//            .build()
-//
-//        return client.newCall(request)
-//            .enqueue(object : Callback {
-//                override fun onResponse(call: Call, response: Response) {
-//                    try {
-//                        val body = response.body?.string() ?: throw RuntimeException("body is null")
-//                        callback.onSuccess(gson.fromJson(body, typeToken.type))
-//                    } catch (e: Exception) {
-//                        callback.onError()
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call, e: IOException) {
-//                    callback.onError()
-//                }
-//            })
-
-
-//    override fun getByIdAsync(id: Long, callback: PostRepository.RepositoryCallback<Post>) {
-//        val request: Request = Request.Builder()
-//            .url("${BASE_URL}/api/posts/$id")
-//            .build()
-//
-//        client.newCall(request)
-//            .enqueue(object : Callback {
-//                override fun onFailure(call: Call, e: IOException) {
-//                    callback.onError()
-//                }
-//
-//                override fun onResponse(call: Call, response: Response) {
-//                    val body = response.body?.string() ?: throw RuntimeException("body is null")
-//                    try {
-//                        callback.onSuccess(gson.fromJson(body, Post::class.java))
-//                    } catch (e: Exception) {
-//                        callback.onError()
-//                    }
-//                }
-//            })
-//    }
-
-
-//    override fun saveAsync(post: Post, callback: PostRepository.RepositoryCallback<Post>) {
-//        val request: Request = Request.Builder()
-//            .post(gson.toJson(post).toRequestBody(jsonType))
-//            .url("${BASE_URL}/api/posts")
-//            .build()
-//        client.newCall(request)
-//            .enqueue(object : Callback {
-//                override fun onFailure(call: Call, e: IOException) {
-//                    callback.onError()
-//                }
-//
-//                override fun onResponse(call: Call, response: Response) {
-//                    val body = response.body?.string() ?: throw RuntimeException("body is null")
-//                    try {
-//                        callback.onSuccess(gson.fromJson(body, Post::class.java))
-//                    } catch (e: Exception) {
-//                        callback.onError()
-//                    }
-//                }
-//
-//            })
-//    }
-
-
-//    override fun likeByIdAsync(id: Long, callback: PostRepository.RepositoryCallback<Post>) {
-//        val requestLike: Request = Request.Builder()
-//            .post(EMPTY_REQUEST)
-//            .url("${BASE_URL}/api/slow/posts/$id/likes")
-//            .build()
-//        client.newCall(requestLike)
-//            .enqueue(object : Callback {
-//                override fun onFailure(call: Call, e: IOException) {
-//                    callback.onError()
-//                }
-//
-//                override fun onResponse(call: Call, response: Response) {
-//                    val body = response.body?.string() ?: throw RuntimeException("body is null")
-//                    try {
-//                        callback.onSuccess(gson.fromJson(body, Post::class.java))
-//                    } catch (e: Exception) {
-//                        callback.onError()
-//                    }
-//                }
-//
-//            })
-//    }
-
-//    override fun dislikeByIdAsync(id: Long, callback: PostRepository.RepositoryCallback<Post>) {
-//        val request: Request = Request.Builder()
-//            .delete()
-//            .url("${BASE_URL}/api/slow/posts/$id/likes")
-//            .build()
-//
-//        client.newCall(request)
-//            .enqueue(object : Callback {
-//                override fun onFailure(call: Call, e: IOException) {
-//                    callback.onError()
-//                }
-//
-//                override fun onResponse(call: Call, response: Response) {
-//                    val body = response.body?.string() ?: throw RuntimeException("body is null")
-//                    try {
-//                        callback.onSuccess(gson.fromJson(body, Post::class.java))
-//                    } catch (e: Exception) {
-//                        callback.onError()
-//                    }
-//                }
-//            })
-//
-//    }
-//
-//    override fun removeByIdAsync(id: Long, callback: PostRepository.RepositoryCallback<Unit>) {
-//        val request: Request = Request.Builder()
-//            .delete()
-//            .url("${BASE_URL}/api/slow/posts/$id")
-//            .build()
-//
-//        client.newCall(request)
-//            .enqueue(object : Callback {
-//                override fun onFailure(call: Call, e: IOException) {
-//                    callback.onError()
-//                }
-//
-//                override fun onResponse(call: Call, response: Response) {
-//                    val body = response.body?.string() ?: throw RuntimeException("body is null")
-//                    try {
-//                        callback.onSuccess(Unit)
-//                    } catch (e: Exception) {
-//                        callback.onError()
-//                    }
-//                }
-//
-//            })
-//    }
-
-
-//    override fun shareByIdAsync(id: Long, callback: PostRepository.RepositoryCallback<Post>) {
-//
-//    }
-//}
 
 
 
