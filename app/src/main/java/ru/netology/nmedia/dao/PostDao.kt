@@ -26,7 +26,7 @@ interface PostDao {
         )
         suspend fun likeById(id: Long)
         @Query("SELECT * FROM PostEntity WHERE id = :id")
-        suspend fun getById(id: Long) : Post
+        suspend fun getById(id: Long) : PostEntity
 
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         suspend fun insert(posts: List<PostEntity>)
