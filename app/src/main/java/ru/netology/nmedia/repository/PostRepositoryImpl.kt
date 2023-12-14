@@ -2,6 +2,7 @@ package ru.netology.nmedia.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
+import kotlinx.coroutines.Dispatchers
 import ru.netology.nmedia.api.ApiService
 import ru.netology.nmedia.dao.PostDao
 import ru.netology.nmedia.dto.Post
@@ -12,9 +13,37 @@ import ru.netology.nmedia.error.ApiError
 import ru.netology.nmedia.error.NetworkError
 import ru.netology.nmedia.error.UnknownAppError
 import java.io.IOException
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import java.util.concurrent.CancellationException
 
 class PostRepositoryImpl(private val dao: PostDao) : PostRepository {
-    override val data: LiveData<List<Post>> = dao.getAll().map(List<PostEntity>::toDto)
+    override val data: Flow<List<Post>> = dao.getAllVisible()
+        .map(List<PostEntity>::toDto)
+        .flowOn(Dispatchers.Default)
+    override fun getNewerCount(id: Long): Flow<Int> = flow {
+        while (true) {
+            delay(10_000)
+            try {
+                val response = ApiService.api.getNewer(id)
+                val posts = response.body().orEmpty()
+                dao.insert(posts.toEntity().map {
+                    it.copy(hidden = true)
+                })
+                emit(posts.size)
+            } catch (e: CancellationException) {
+                throw e
+            }   catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+    override suspend fun showNewPosts() {
+        dao.readNew()
+    }
 
     override suspend fun getAll() {
         try {

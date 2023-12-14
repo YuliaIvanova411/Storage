@@ -5,15 +5,25 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import ru.netology.nmedia.dto.Post
+import kotlinx.coroutines.flow.Flow
 import ru.netology.nmedia.entity.PostEntity
 
 @Dao
 interface PostDao {
         @Query("SELECT * FROM PostEntity ORDER BY id DESC")
-        fun getAll(): LiveData<List<PostEntity>>
+        fun getAll(): Flow<List<PostEntity>>
         @Query("SELECT COUNT(*) == 0 FROM PostEntity")
         suspend fun isEmpty() : Boolean
+
+        @Query("SELECT * FROM PostEntity WHERE hidden = 0 ORDER BY id DESC")
+        fun getAllVisible(): Flow<List<PostEntity>>
+
+        @Query("UPDATE PostEntity SET hidden = 0")
+        fun readNew()
+
+        @Query("SELECT COUNT(*) FROM PostEntity WHERE hidden = 1")
+        suspend fun newerCount(): Int
+
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         suspend fun insert(post: PostEntity)
         @Query(

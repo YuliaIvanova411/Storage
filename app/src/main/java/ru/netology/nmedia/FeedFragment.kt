@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.adapter.PostListener
 import ru.netology.nmedia.databinding.FragmentFeedBinding
@@ -82,12 +83,30 @@ class FeedFragment : Fragment() {
             feedFragmentBinding.swipeRefresh?.isRefreshing = state.loading
         })
 
+        adapter.registerAdapterDataObserver(object  :RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                    if (positionStart == 0) {
+                        feedFragmentBinding.list.smoothScrollToPosition(0)
+                    }
+            }
+        })
+
         feedFragmentBinding.retryButton?.setOnClickListener {
             viewModel.loadPosts()
         }
         feedFragmentBinding.swipeRefresh?.setOnRefreshListener {
             viewModel.refreshPosts()
         }
+        viewModel.newerCount.observe(viewLifecycleOwner) {
+            if (it != 0) {
+                feedFragmentBinding.loadNew?.visibility = View.VISIBLE
+            }
+        }
+        feedFragmentBinding.loadNew?.setOnClickListener {
+            viewModel.readNew()
+            feedFragmentBinding.loadNew.visibility = View.GONE
+        }
+
 
         feedFragmentBinding.add.setOnClickListener {
             findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
@@ -103,11 +122,7 @@ class FeedFragment : Fragment() {
 
 
 
-//       activityMainBinding.cancelEdit.setOnClickListener {
-//            viewModel.clearEdit()
-//           activityMainBinding.content.setText("")
-//           activityMainBinding.group.visibility = View.GONE
-//        }
+
 
 
 

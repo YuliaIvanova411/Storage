@@ -25,5 +25,7 @@
     <string name="no_internet">There is no Internet at all</string>
     <string name="retry_loading">Retry</string>
     <string name="empty_posts">There are no posts.\n If you create a new post, it will appear here</string>
+    <string name="description_load_new_posts" >Load new posts</string>
+    <string name="load_new_posts">Loading new posts</string>
 
 </resources>

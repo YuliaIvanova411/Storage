@@ -24,5 +24,7 @@
     <string name="retry_loading">Еще раз!</string>
     <string name="empty_posts">Постов совсем нет. Но если вы что-то напишете, они появятся</string>
     <string name="no_internet">Интернет пропал совсем</string>
+    <string name="description_load_new_posts">Загрузить новые посты</string>
+    <string name="load_new_posts">Загрузка новых постов</string>
 
 </resources>
