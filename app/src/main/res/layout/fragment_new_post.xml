@@ -4,6 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:paddingBottom="?actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
     <EditText
         android:id="@+id/content"
         android:layout_width="match_parent"
@@ -16,12 +25,55 @@
         android:inputType="textMultiLine"
         android:padding="@dimen/indent" />
 
-    <com.google.android.material.bottomappbar.BottomAppBar
+    <FrameLayout
+        android:id="@+id/previewContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/preview"
+            android:adjustViewBounds="true"
+            tools:srcCompat="@tools:sample/avatars[7]"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/clear"
+            android:layout_gravity="bottom|center_horizontal"
+            android:text="@string/clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+
+    </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
         android:id="@+id/bottomAppBar"
         style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom" />
+        android:layout_height="?actionBarSize"
+        android:layout_gravity="bottom"
+        android:background="?colorPrimary">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pickPhoto"
+            android:background="?selectableItemBackground"
+            style="@style/Widget.AppTheme.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/description_select_photo"
+            android:padding="@dimen/indent"
+            app:icon="@drawable/ic_pick_photo_24" />
+
+        <com.google.android.material.button.MaterialButton
+            android:background="?selectableItemBackground"
+            android:id="@+id/camera"
+            style="@style/Widget.AppTheme.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/description_take_photo"
+            android:padding="@dimen/indent"
+            app:icon="@drawable/ic_camera_24" />
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/ok"

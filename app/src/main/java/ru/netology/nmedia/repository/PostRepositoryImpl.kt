@@ -1,7 +1,5 @@
 package ru.netology.nmedia.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.map
 import kotlinx.coroutines.Dispatchers
 import ru.netology.nmedia.api.ApiService
 import ru.netology.nmedia.dao.PostDao
@@ -19,6 +17,12 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import java.util.concurrent.CancellationException
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import ru.netology.nmedia.dto.Attachment
+import ru.netology.nmedia.dto.Media
+import ru.netology.nmedia.enumeration.AttachmentType
+import java.io.File
 
 class PostRepositoryImpl(private val dao: PostDao) : PostRepository {
     override val data: Flow<List<Post>> = dao.getAllVisible()
@@ -150,6 +154,34 @@ class PostRepositoryImpl(private val dao: PostDao) : PostRepository {
         } catch (e : Exception) {
             throw UnknownAppError
         }
+    }
+
+    override suspend fun saveWithAttachment(post: Post, file: File) {
+        try {
+            val media = uploadMedia(file)
+            val response = ApiService.api.save(post.copy(attachment = Attachment(url = media.id, AttachmentType.IMAGE),))
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            dao.insert(PostEntity.fromDto(body))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownAppError
+        }
+    }
+
+    private suspend fun uploadMedia(file: File): Media {
+        val formData = MultipartBody.Part.createFormData(
+            "file", file.name, file.asRequestBody()
+        )
+        val response = ApiService.api.uploadMedia(formData)
+        if (!response.isSuccessful) {
+            throw ApiError(response.code(), response.message())
+        }
+        return response.body() ?: throw ApiError(response.code(), response.message())
     }
 
   }

@@ -5,15 +5,19 @@ import android.view.View
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
+import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.holder.load
+import ru.netology.nmedia.holder.loadAttachment
 
 interface PostListener {
     fun onRemove(post: Post)
     fun onEdit (post: Post)
     fun onLike (post: Post)
+
+    fun onAttachment(post: Post)
 
    // fun onShare (post: Post)
 
@@ -25,7 +29,7 @@ class PostViewHolder(
     private val listener: PostListener,
 ) : ViewHolder(binding.root) {
 
-
+    private val attachmentUrl = "${BuildConfig.BASE_URL}/media/"
     fun count(number: Long) = when (number) {
         in 0..999 -> number.toString()
         in 1000..9_999
@@ -93,6 +97,16 @@ class PostViewHolder(
                     }
                 }
                     .show()
+            }
+            if (post.attachment != null) {
+                attachment.visibility = View.VISIBLE
+                attachment.loadAttachment(attachmentUrl + post.attachment.url)
+            } else {
+                attachment.visibility = View.GONE
+            }
+
+            attachment.setOnClickListener {
+                listener.onAttachment(post)
             }
         }
     }

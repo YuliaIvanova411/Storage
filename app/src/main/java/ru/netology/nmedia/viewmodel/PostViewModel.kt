@@ -14,8 +14,7 @@ import ru.netology.nmedia.util.SingleLiveEvent
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
-import java.io.IOException
-import java.net.ConnectException
+import ru.netology.nmedia.model.PhotoModel
 
 private val empty = Post(
     id = 0,
@@ -35,11 +34,15 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     val dataState :LiveData<FeedModelState>
         get() = _dataState
 
-    val edited = MutableLiveData(empty)
+    private val edited = MutableLiveData(empty)
     private val _postCreated = SingleLiveEvent<Unit>()
 
     val postCreated: LiveData<Unit>
         get() = _postCreated
+
+    private val _photo = MutableLiveData<PhotoModel?>(null)
+    val photo: LiveData<PhotoModel?>
+        get() = _photo
 
     val newerCount: LiveData<Int> = data.switchMap {
         val id = it.posts.firstOrNull()?.id ?: 0L
@@ -47,6 +50,13 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             .asLiveData(Dispatchers.Default)
     }
 
+    fun setPhoto(photoModel: PhotoModel) {
+        _photo.value = photoModel
+    }
+
+    fun clearPhoto(){
+        _photo.value = null
+    }
     init {
         loadPosts()
     }
@@ -76,9 +86,9 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         }
         _dataState.value = FeedModelState()
     }
-    fun like(id : Long) = viewModelScope.launch{
-            val post = repository.getById(id)
-    }
+//    fun like(id : Long) = viewModelScope.launch{
+//            val post = repository.getById(id)
+//    }
 
     fun likeById(id: Long) {
         edited.value?.let {
@@ -136,7 +146,11 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             _postCreated.value = Unit
             viewModelScope.launch {
                 try {
-                    repository.save(it)
+                    _photo.value?.let{ photoModel ->
+                        repository.saveWithAttachment(it, photoModel.file)
+                    } ?: run {
+                        repository.save(it)
+                    }
                     _dataState.value = FeedModelState()
                 } catch (e : Exception) {
                     _dataState.value = FeedModelState(error = true)

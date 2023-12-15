@@ -1,4 +1,4 @@
-package ru.netology.nmedia
+package ru.netology.nmedia.activity
 
 import android.content.Intent
 import android.net.Uri
@@ -11,12 +11,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.adapter.PostListener
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.model.FeedModel
 import ru.netology.nmedia.viewmodel.PostViewModel
+import ru.netology.nmedia.activity.ImageFragment.Companion.attachUrl
 
 
 class FeedFragment : Fragment() {
@@ -55,6 +57,15 @@ class FeedFragment : Fragment() {
                     if (post.likedByMe) viewModel.disLikeById(post.id) else
                         viewModel.likeById(post.id)
 
+                }
+
+                override fun onAttachment(post: Post) {
+                    if (post.attachment != null) {
+                        findNavController().navigate(
+                            R.id.action_feedFragment_to_imageFragment,
+                            Bundle().apply { attachUrl = post.attachment.url }
+                        )
+                    }
                 }
 
 //                override fun onShare(post: Post) {

@@ -1,16 +1,14 @@
-package ru.netology.nmedia
+package ru.netology.nmedia.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.EditPostFragmentBinding
 import ru.netology.nmedia.utils.AndroidUtils
 import ru.netology.nmedia.utils.StringArg
@@ -63,21 +61,3 @@ class EditPostFragment : Fragment() {
         return binding.root
     }
 }
-//        val activity = this
-//        activity.onBackPressedDispatcher.addCallback(
-//            activity, object : OnBackPressedCallback(true) {
-//                override fun handleOnBackPressed() {
-//                    setResult(Activity.RESULT_CANCELED, intent)
-//                    finish()
-//                }
-//            }
-//        )
-
-//    object Contract : ActivityResultContract<String, String?>() {
-//        override fun createIntent(context: Context, input: String) =
-//            Intent(context, EditPostActivity ::class.java).putExtra(Intent.EXTRA_TEXT, input)
-//
-//        override fun parseResult(resultCode: Int, intent: Intent?) = intent?.getStringExtra(Intent.EXTRA_TEXT)
-//
-//    }
-//}
