@@ -31,6 +31,7 @@
     <string name="clear" >Очистить предпросмотр</string>
     <string name="pick_photo_error">Ошибка выбора фото</string>
     <string name="description_full_screen_image">Во весь экран</string>
-    <string name="image" />
+    <string name="image" >картинка</string>
+    <string name="save" >сохранить</string>
 
 </resources>
