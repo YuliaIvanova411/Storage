@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -57,7 +58,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/pickPhoto"
             android:background="?selectableItemBackground"
-            style="@style/Widget.AppTheme.IconButton"
+            style="@style/Widget.AppCompat.FloatingButtons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/description_select_photo"
@@ -67,7 +68,7 @@
         <com.google.android.material.button.MaterialButton
             android:background="?selectableItemBackground"
             android:id="@+id/camera"
-            style="@style/Widget.AppTheme.IconButton"
+            style="@style/Widget.AppCompat.FloatingButtons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/description_take_photo"
@@ -75,24 +76,25 @@
             app:icon="@drawable/ic_camera_24" />
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/ok"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/description_post_save"
-        app:layout_anchor="@id/bottomAppBar"
-        app:srcCompat="@drawable/ic_add_24dp" />
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/ok"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:contentDescription="@string/description_post_save"-->
+<!--        app:layout_anchor="@id/bottomAppBar"-->
+<!--        app:layout_anchorGravity="center_horizontal"-->
+<!--        app:srcCompat="@drawable/ic_add_24dp" />-->
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/cancel_button"
-        style="@style/Widget.AppCompat.FloatingButtons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fabSize="mini"
-        app:layout_anchor="@id/bottomAppBar"
-        android:contentDescription="@string/cancel"
-        app:layout_anchorGravity="right"
-        app:srcCompat="@drawable/ic_cancel_48" />
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/cancel_button"-->
+<!--        style="@style/Widget.AppCompat.FloatingButtons"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:fabSize="mini"-->
+<!--        app:layout_anchor="@id/bottomAppBar"-->
+<!--        android:contentDescription="@string/cancel"-->
+<!--        app:layout_anchorGravity="right"-->
+<!--        app:srcCompat="@drawable/ic_cancel_48" />-->
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

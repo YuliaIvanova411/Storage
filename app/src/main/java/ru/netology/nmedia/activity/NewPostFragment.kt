@@ -21,9 +21,10 @@ import androidx.core.net.toFile
 import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import com.google.android.gms.cast.framework.media.ImagePicker
+//import com.google.android.gms.cast.framework.media.ImagePicker
 import ru.netology.nmedia.R
 import ru.netology.nmedia.model.PhotoModel
+import com.github.dhaval2404.imagepicker.ImagePicker
 
 class NewPostFragment : Fragment() {
 
@@ -120,12 +121,12 @@ class NewPostFragment : Fragment() {
 
 
 
-        binding.cancelButton.setOnClickListener{
-            //val intent = Intent()
-            //(Activity.RESULT_CANCELED)
-            AndroidUtils.hideKeyboard(requireView())
-            findNavController().navigateUp()
-        }
+//        binding.cancelButton.setOnClickListener{
+//            //val intent = Intent()
+//            //(Activity.RESULT_CANCELED)
+//            AndroidUtils.hideKeyboard(requireView())
+//            findNavController().navigateUp()
+//        }
         return binding.root
     }
 
