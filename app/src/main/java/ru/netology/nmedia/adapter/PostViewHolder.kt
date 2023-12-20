@@ -3,6 +3,8 @@ package ru.netology.nmedia.adapter
 
 import android.view.View
 import android.widget.PopupMenu
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import ru.netology.nmedia.BuildConfig
@@ -27,7 +29,7 @@ interface PostListener {
 class PostViewHolder(
     private val binding: CardPostBinding,
     private val listener: PostListener,
-) : ViewHolder(binding.root) {
+) : RecyclerView.ViewHolder(binding.root) {
 
     private val attachmentUrl = "${BuildConfig.BASE_URL}/media/"
     fun count(number: Long) = when (number) {
@@ -77,6 +79,7 @@ class PostViewHolder(
 //            share.setOnClickListener {
 //                listener.onShare(post)
 //            }
+            menu.isVisible = post.ownedByMe
 
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {

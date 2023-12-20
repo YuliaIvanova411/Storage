@@ -9,6 +9,7 @@ import ru.netology.nmedia.dto.Attachment
 data class PostEntity (
     @PrimaryKey(autoGenerate = true)
     val id: Long,
+    val authorId: Long,
     val author: String,
     val authorAvatar: String,
     var content: String,
@@ -23,6 +24,7 @@ data class PostEntity (
 ) {
     fun toDto() = Post(
         id= id,
+        authorId = authorId,
         author = author,
         authorAvatar = authorAvatar,
         content = content,
@@ -37,6 +39,7 @@ data class PostEntity (
         fun fromDto(dto: Post) =
         PostEntity(
             id = dto.id,
+            authorId = dto.authorId,
             author = dto.author,
             authorAvatar = dto.authorAvatar,
             content = dto.content,

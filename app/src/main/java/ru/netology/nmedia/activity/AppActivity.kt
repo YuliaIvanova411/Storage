@@ -5,7 +5,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -20,6 +24,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import ru.netology.nmedia.R
+import androidx.core.view.MenuProvider
+import ru.netology.nmedia.auth.AppAuth
+import ru.netology.nmedia.viewmodel.AuthViewModel
 
 class AppActivity : AppCompatActivity() {
     lateinit var appBarConfiguration: AppBarConfiguration
@@ -58,9 +65,49 @@ class AppActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-            lifecycleScope
-            checkGoogleApiAvailability()
+        lifecycleScope
+        checkGoogleApiAvailability()
+
+        val authViewModel by viewModels<AuthViewModel>()
+        var currentMenuProvider: MenuProvider? = null
+        authViewModel.data.observe(this) {
+            currentMenuProvider?.let (::removeMenuProvider)
+            addMenuProvider(object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.menu_auth, menu)
+                    val authenticated = authViewModel.isAuthenticated
+                    menu.setGroupVisible(R.id.authorized, authenticated)
+                    menu.setGroupVisible(R.id.unauthorized, !authenticated)
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
+                    when (menuItem.itemId) {
+                        R.id.signUp -> {
+                            AppAuth.getInstance().setAuth(5, "x-token")
+                            true
+                        }
+
+                        R.id.signIn -> {
+
+                            //вместо 5 надо будет вписывать то что пришлет сервер
+                            // и делать это во вьюмодели или репозитории
+                            AppAuth.getInstance().setAuth(5, "x-token")
+                            true
+                        }
+
+                        R.id.logout -> {
+                            AppAuth.getInstance().clearAuth()
+                            true
+                        }
+
+                        else -> false
+                    }
+            }.also {
+                   currentMenuProvider = it
+            } ,this)
+
         }
+    }
         private fun requestNotificationsPermission() {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
                 return
