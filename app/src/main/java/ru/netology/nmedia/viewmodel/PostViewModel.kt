@@ -13,12 +13,16 @@ import ru.netology.nmedia.repository.PostRepositoryImpl
 import ru.netology.nmedia.util.SingleLiveEvent
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.model.PhotoModel
 
 private val empty = Post(
     id = 0,
     author = "Me",
+    authorId = 0,
     authorAvatar = "netology.jpg",
     content = "",
     published = "",
@@ -29,7 +33,19 @@ private val empty = Post(
 
 class PostViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: PostRepository = PostRepositoryImpl(AppDb.getInstance(context = application).postDao())
-    val data: LiveData<FeedModel> = repository.data.map(::FeedModel).asLiveData(Dispatchers.Default)
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val data: LiveData<FeedModel> = AppAuth.getInstance()
+        .authState
+        .flatMapLatest {auth ->
+            repository.data.map {
+                posts -> FeedModel(
+                posts.map { it.copy(ownedByMe = auth.id == it.authorId) },
+                posts.isEmpty()
+            )
+        }
+        }
+        .asLiveData(Dispatchers.Default)
+
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState :LiveData<FeedModelState>
         get() = _dataState

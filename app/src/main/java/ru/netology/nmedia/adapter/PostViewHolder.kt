@@ -3,6 +3,7 @@ package ru.netology.nmedia.adapter
 
 import android.view.View
 import android.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import ru.netology.nmedia.BuildConfig
@@ -52,6 +53,8 @@ class PostViewHolder(
             like.isChecked = post.likedByMe
             like.text = (count(post.likes))
             share.text = (count(post.share))
+
+            menu.isVisible = post.ownedByMe
 
 
             val url = "http://10.0.2.2:9999/avatars/${post.authorAvatar}"

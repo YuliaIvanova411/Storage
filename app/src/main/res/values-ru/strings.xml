@@ -33,5 +33,8 @@
     <string name="description_full_screen_image">Во весь экран</string>
     <string name="image" >картинка</string>
     <string name="save" >сохранить</string>
+    <string name="sign_in">Войти</string>
+    <string name="sign_up" >Зарегистрироваться</string>
+    <string name="sign_out">Выйти</string>
 
 </resources>
