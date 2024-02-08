@@ -13,7 +13,7 @@ import ru.netology.nmedia.repository.AuthRepositoryImpl
 
 class AuthViewModel: ViewModel() {
     val data = AppAuth.getInstance().authState
-        //TODO посмотреть чо там с лайвдатой
+
     val authenticated: Boolean
         get() = data.value.id != 0L
 
