@@ -14,7 +14,7 @@ data class Post (
     val share: Long = 0,
     val videoLink: String? = null,
     val attachment: Attachment? = null,
-    val ownedByMe: Boolean = true
+    val ownedByMe: Boolean = false
 
     )
 data class Attachment(

@@ -1,6 +1,7 @@
 package ru.netology.nmedia.viewmodel
 
 import android.app.Application
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.repository.PostRepository
@@ -22,7 +23,7 @@ import ru.netology.nmedia.model.PhotoModel
 private val empty = Post(
     id = 0,
     author = "Me",
-    authorId = 0,
+    authorId = 0L,
     authorAvatar = "netology.jpg",
     content = "",
     published = "",
@@ -76,7 +77,13 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     init {
         loadPosts()
     }
-
+    fun isAuthorized(): Boolean {
+        return if (AppAuth.getInstance().authState.value != null) {
+            true
+        } else {
+            false
+        }
+    }
     fun loadPosts() = viewModelScope.launch {
                 // Начинаем загрузку
         try {

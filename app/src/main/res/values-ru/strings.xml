@@ -36,5 +36,16 @@
     <string name="sign_in">Войти</string>
     <string name="sign_up" >Зарегистрироваться</string>
     <string name="sign_out">Выйти</string>
+    <string name="description_preview" >Описание</string>
+    <string name="name" >Имя</string>
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="confirm_password" >Подтвердите пароль</string>
+    <string name="login_now" >Зарегистрироваться</string>
+    <string name="your_login" >Ваш логин</string>
+    <string name="your_password" >Ваш пароль</string>
+    <string name="blankAuth" >Пустая авторизация</string>
+    <string name="invalidAuth">Ошибка авторизации</string>
+    <string name="signIn" >Войти</string>
 
 </resources>

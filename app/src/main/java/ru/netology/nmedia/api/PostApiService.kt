@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit
 import okhttp3.MultipartBody
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.dto.Media
+import ru.netology.nmedia.model.AuthModel
 
 private const val BASE_URL = "${BuildConfig.BASE_URL}/api/slow/"
 
@@ -66,6 +67,13 @@ interface PostApiService {
     @Multipart
     @POST("media")
     suspend fun uploadMedia(@Part file: MultipartBody.Part): Response<Media>
+
+    @FormUrlEncoded
+    @POST("users/authentication")
+    suspend fun login(
+        @Field("login") login: String,
+        @Field("pass") pass: String
+    ): Response<AuthModel>
 }
 
 object ApiService {

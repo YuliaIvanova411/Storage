@@ -1,5 +1,6 @@
 package ru.netology.nmedia.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -24,6 +25,7 @@ import ru.netology.nmedia.activity.ImageFragment.Companion.attachUrl
 class FeedFragment : Fragment() {
 
     val viewModel: PostViewModel by activityViewModels()
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,10 +56,11 @@ class FeedFragment : Fragment() {
                 }
 
                 override fun onLike(post: Post) {
-                    if (post.likedByMe) viewModel.disLikeById(post.id) else
-                        viewModel.likeById(post.id)
-
-                }
+                    if (viewModel.isAuthorized()) {
+                        viewModel.likeById(post.id)}
+                    else findNavController()
+                        .navigate(R.id.loginFragment)
+               }
 
                 override fun onAttachment(post: Post) {
                     if (post.attachment != null) {
@@ -120,7 +123,10 @@ class FeedFragment : Fragment() {
 
 
         feedFragmentBinding.add.setOnClickListener {
-            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
+            if (viewModel.isAuthorized()) {
+            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)}
+            else findNavController()
+                .navigate(R.id.loginFragment)
 
         }
 

@@ -36,10 +36,23 @@
     <string name="image">image</string>
     <string name="sign_up" >Registration</string>
     <string name="sign_out">Logout</string>
-    <string name="sign_in">Log in</string><![CDATA[
+    <string name="sign_in">Log in</string>
+    <string name="description_preview" >description preview</string>
+    <string name="login" >Login</string>
+    <string name="password" >Password</string>
+    <string name="confirm_password" >Confirm password</string>
+    <string name="login_now" >Log in</string>
+    <string name="your_password" >Your password</string>
+    <string name="name">Name</string>
+    <string name="your_login">Your login</string>
+    <string name="blankAuth" >Blank authorization</string>
+    <string name="invalidAuth">Invalid autrorization</string>
+    <string name="signIn" >Sign In</string><![CDATA[
+
 
 
     />
+
 
 
 
