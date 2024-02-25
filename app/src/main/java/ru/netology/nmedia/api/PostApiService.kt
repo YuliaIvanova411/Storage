@@ -11,6 +11,7 @@ import retrofit2.http.*
 import ru.netology.nmedia.BuildConfig
 import java.util.concurrent.TimeUnit
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.dto.Media
 import ru.netology.nmedia.model.AuthModel
@@ -73,6 +74,24 @@ interface PostApiService {
     suspend fun login(
         @Field("login") login: String,
         @Field("pass") pass: String
+    ): Response<AuthModel>
+
+    @FormUrlEncoded
+    @POST("users/registration")
+    suspend fun register(
+        @Field("login") login: String,
+        @Field("pass") pass: String,
+        @Field("name") name: String
+    ): Response<AuthModel>
+
+
+    @Multipart
+    @POST("users/registration")
+    suspend fun registerWithPhoto(
+        @Part("login") login: RequestBody,
+        @Part("pass") pass: RequestBody,
+        @Part("name") name: RequestBody,
+        @Part media: MultipartBody.Part,
     ): Response<AuthModel>
 }
 

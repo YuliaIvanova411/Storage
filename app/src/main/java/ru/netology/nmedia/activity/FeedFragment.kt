@@ -56,7 +56,7 @@ class FeedFragment : Fragment() {
                 }
 
                 override fun onLike(post: Post) {
-                    if (viewModel.isAuthorized()) {
+                    if (viewModel.isAuthorized(childFragmentManager)) {
                         viewModel.likeById(post.id)}
                     else findNavController()
                         .navigate(R.id.loginFragment)
@@ -123,7 +123,7 @@ class FeedFragment : Fragment() {
 
 
         feedFragmentBinding.add.setOnClickListener {
-            if (viewModel.isAuthorized()) {
+            if (viewModel.isAuthorized(childFragmentManager)) {
             findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)}
             else findNavController()
                 .navigate(R.id.loginFragment)

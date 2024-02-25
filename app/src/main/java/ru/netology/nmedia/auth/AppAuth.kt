@@ -14,7 +14,7 @@ class AppAuth private constructor(context: Context){
             prefs.getString(KEY_TOKEN, null)
         )
     )
-    val authState: StateFlow<AuthState> = _authState.asStateFlow()
+    val authState = _authState.asStateFlow()
 
     @Synchronized
     fun setAuth(id: Long, token: String){

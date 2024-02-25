@@ -1,11 +1,13 @@
 package ru.netology.nmedia.viewmodel
 
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.auth.AppAuth
+import ru.netology.nmedia.dialog.SignOutDialog
 import ru.netology.nmedia.error.ApiError
 import ru.netology.nmedia.model.AuthModelState
 import ru.netology.nmedia.repository.AuthRepository
@@ -44,5 +46,8 @@ class AuthViewModel: ViewModel() {
     fun logout() {
         AppAuth.getInstance().removeAuth()
         _state.value = AuthModelState(notLoggedIn = true)
+    }
+    fun confirmLogout(manager: FragmentManager) {
+        SignOutDialog().show(manager, SignOutDialog.TAG)
     }
 }

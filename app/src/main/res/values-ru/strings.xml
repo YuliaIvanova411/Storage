@@ -47,5 +47,12 @@
     <string name="blankAuth" >Пустая авторизация</string>
     <string name="invalidAuth">Ошибка авторизации</string>
     <string name="signIn" >Войти</string>
+    <string name="description_choose_gallery" >Выбрать из галереи</string>
+    <string name="description_make_photo" >Сделать фото</string>
+    <string name="register" >Зарегистрироваться</string>
+    <string name="blankRegister" >Пустая регистрация</string>
+    <string name="match_passwords" >Совпадение паролей</string>
+    <string name="confirm_signOut" >Подтвердить выход</string>
+    <string name="signOut" >Выйти</string>
 
 </resources>

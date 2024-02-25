@@ -18,6 +18,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import ru.netology.nmedia.auth.AppAuth
+import ru.netology.nmedia.dialog.SignInDialog
 import ru.netology.nmedia.model.PhotoModel
 
 private val empty = Post(
@@ -77,10 +78,11 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     init {
         loadPosts()
     }
-    fun isAuthorized(): Boolean {
+    fun isAuthorized(manager: FragmentManager): Boolean {
         return if (AppAuth.getInstance().authState.value != null) {
             true
         } else {
+            SignInDialog().show(manager, SignInDialog.TAG)
             false
         }
     }

@@ -29,9 +29,12 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.R
 import ru.netology.nmedia.auth.AppAuth
+import ru.netology.nmedia.dialog.SignOutDialog
 import ru.netology.nmedia.viewmodel.AuthViewModel
 
-class AppActivity : AppCompatActivity() {
+class AppActivity : AppCompatActivity(),
+
+    SignOutDialog.ConfirmationListener {
     val viewModel by viewModels<AuthViewModel>()
 
     lateinit var appBarConfiguration: AppBarConfiguration
@@ -98,11 +101,14 @@ class AppActivity : AppCompatActivity() {
                         true
                     }
                     R.id.signup -> {
-                        AppAuth.getInstance().setAuth(5, "x-token")
+                        navHostFragment.navController
+                            .navigate(R.id.registerFragment)
+                        //AppAuth.getInstance().setAuth(5, "x-token")
                         true
                     }
                     R.id.signout -> {
-                        AppAuth.getInstance().removeAuth()
+                        viewModel.confirmLogout(supportFragmentManager)
+                        //AppAuth.getInstance().removeAuth()
                         true
                     }
                     else -> false
@@ -153,4 +159,8 @@ class AppActivity : AppCompatActivity() {
                         || super.onSupportNavigateUp()
 
         }
+            override fun confirmButtonClicked() {
+                viewModel.logout()
+                findNavController(R.id.nav_host_fragment).navigateUp()
+            }
     }

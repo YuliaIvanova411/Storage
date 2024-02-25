@@ -56,4 +56,8 @@
         android:id="@+id/loginFragment"
         android:name="ru.netology.nmedia.activity.LoginFragment"
         android:label="@string/signIn" />
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="ru.netology.nmedia.activity.RegistrationFragment"
+        android:label="@string/register" />
 </navigation>
