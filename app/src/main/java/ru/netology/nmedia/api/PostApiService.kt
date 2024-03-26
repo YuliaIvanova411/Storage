@@ -14,6 +14,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.dto.Media
+import ru.netology.nmedia.dto.PushToken
 import ru.netology.nmedia.model.AuthModel
 
 private const val BASE_URL = "${BuildConfig.BASE_URL}/api/slow/"
@@ -68,6 +69,9 @@ interface PostApiService {
     @Multipart
     @POST("media")
     suspend fun uploadMedia(@Part file: MultipartBody.Part): Response<Media>
+
+    @POST("users/push-tokens")
+    suspend fun sendPushToken(@Body pushToken: PushToken): Response<Unit>
 
     @FormUrlEncoded
     @POST("users/authentication")
