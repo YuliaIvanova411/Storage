@@ -51,10 +51,12 @@
     <string name="description_choose_gallery" >Pick photo</string>
     <string name="description_make_photo" >Make photo</string>
     <string name="register" >Register</string>
-    <string name="blankRegister" >Blank register</string>
+    <string name="blankRegister">Blank register</string>
     <string name="match_passwords" >Match passwords</string>
     <string name="confirm_signOut" >Confirm sign out</string>
-    <string name="signOut" >Sign out</string><![CDATA[
+    <string name="signOut" >Sign out</string>
+    <string name="notification_new_post" >New Post</string>
+    <string name="notification_default" >Notification</string><![CDATA[
 
 
 
