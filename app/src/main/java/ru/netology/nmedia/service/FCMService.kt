@@ -102,7 +102,6 @@ class FCMService : FirebaseMessagingService() {
                  .setContentTitle(
                      getString(
                          R.string.notification_new_post,
-                         content.userName,
                     )
                  )
                  .setStyle(
