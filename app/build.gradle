@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.kapt'
     id 'com.google.gms.google-services'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -59,17 +60,17 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
-    implementation 'androidx.activity:activity-compose:1.8.0'
-    implementation platform('androidx.compose:compose-bom:2023.03.00')
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
+    implementation 'androidx.activity:activity-compose:1.8.2'
+    implementation platform('androidx.compose:compose-bom:2024.04.00')
     implementation 'androidx.compose.ui:ui'
     implementation 'androidx.compose.ui:ui-graphics'
     implementation 'androidx.compose.ui:ui-tooling-preview'
     implementation 'androidx.compose.material3:material3'
     implementation 'com.google.android.gms:play-services-cast-framework:21.4.0'
-    androidTestImplementation platform('androidx.compose:compose-bom:2023.03.00')
+    androidTestImplementation platform('androidx.compose:compose-bom:2024.04.00')
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
-    def core_version = "1.10.1"
+    def core_version = "1.12.0"
     def appcompat_version = "1.6.1"
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
@@ -85,13 +86,14 @@ dependencies {
     def room_version = "2.6.1"
     def firebase_version = "32.2.2"
     def play_services_base_version = "18.3.0"
-    def okhttp_version = "4.11.0"
+    def okhttp_version = "4.12.0"
     def swipe_to_refresh_version = "1.1.0"
     def glide_version = "4.16.0"
-    def retrofit_version = "2.9.0"
-    def okhttplogging_version = "4.11.0"
+    def retrofit_version = "2.10.0"
+    def okhttplogging_version = "4.12.0"
     def coroutines_version = "1.7.3"
     def imagepicker_version = "2.1"
+
 
     implementation "com.google.android.gms:play-services-base:$play_services_base_version"
     implementation "com.github.dhaval2404:imagepicker:$imagepicker_version"
@@ -103,27 +105,31 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glide_version"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipe_to_refresh_version"
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
-    implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation "androidx.core:core-ktx:$core_version"
+    //implementation 'androidx.core:core-ktx:1.12.0'
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation 'com.google.android.material:material:1.11.0'
     implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
     implementation 'com.google.code.gson:gson:2.10.1'
-    implementation 'androidx.core:core-ktx:1.12.0'
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+
     implementation platform("com.google.firebase:firebase-bom:$firebase_version")
     implementation "com.google.firebase:firebase-messaging-ktx"
     implementation "com.google.android.gms:play-services-base:$play_services_base_version"
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    testImplementation "junit:junit:$junit_version"
+    androidTestImplementation "androidx.test.ext:junit:$ext_junit_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
     implementation "androidx.activity:activity-ktx:$activity_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation platform("com.google.firebase:firebase-bom:$firebase_version")
     implementation "com.google.firebase:firebase-messaging-ktx"
     implementation "com.google.android.gms:play-services-base:$play_services_base_version"
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0"
+    kapt "androidx.room:room-compiler:$room_version"
 }

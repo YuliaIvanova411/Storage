@@ -4,17 +4,20 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import ru.netology.nmedia.api.ApiService
+import ru.netology.nmedia.api.PostApiService
 import ru.netology.nmedia.error.ApiError
 import ru.netology.nmedia.error.NetworkError
 import ru.netology.nmedia.model.AuthModel
 import ru.netology.nmedia.model.MediaModel
 import java.io.IOException
+import javax.inject.Inject
 
-class AuthRepositoryImpl: AuthRepository {
+class AuthRepositoryImpl @Inject constructor(
+    private val apiService: PostApiService,
+): AuthRepository {
     override suspend fun login(login: String, password: String): AuthModel {
         try {
-            val response = ApiService.api.login(login, password)
+            val response = apiService.login(login, password)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -30,7 +33,7 @@ class AuthRepositoryImpl: AuthRepository {
     }
     override suspend fun register(login: String, password: String, name: String): AuthModel {
         try {
-            val response = ApiService.api.register(login, password, name)
+            val response = apiService.register(login, password, name)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -56,7 +59,7 @@ class AuthRepositoryImpl: AuthRepository {
             val loginRequestBody = login.toRequestBody("text/plain".toMediaType())
             val passRequestBody = password.toRequestBody("text/plain".toMediaType())
             val nameRequestBody = login.toRequestBody("text/plain".toMediaType())
-            val response = ApiService.api.registerWithPhoto(
+            val response = apiService.registerWithPhoto(
                 loginRequestBody,
                 passRequestBody,
                 nameRequestBody,

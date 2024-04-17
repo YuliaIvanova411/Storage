@@ -5,21 +5,27 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import ru.netology.nmedia.api.PostApiService
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.dialog.SignOutDialog
 import ru.netology.nmedia.error.ApiError
 import ru.netology.nmedia.model.AuthModelState
 import ru.netology.nmedia.repository.AuthRepository
 import ru.netology.nmedia.repository.AuthRepositoryImpl
-
-class AuthViewModel: ViewModel() {
-    val data = AppAuth.getInstance().authState
+import javax.inject.Inject
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+    private val appAuth: AppAuth,
+    private val repository: AuthRepository
+): ViewModel() {
+    val data = appAuth
 
     val authenticated: Boolean
-        get() = data.value.id != 0L
+        get() = appAuth.authState.value.id != 0L
 
-    private val repository: AuthRepository = AuthRepositoryImpl()
+   // private val repository: AuthRepository = AuthRepositoryImpl()
     private val _state = MutableLiveData<AuthModelState>()
     val state: LiveData<AuthModelState>
         get() = _state
@@ -29,7 +35,7 @@ class AuthViewModel: ViewModel() {
             try {
                 _state.value = AuthModelState(loading = true)
                 val result = repository.login(login,password)
-                AppAuth.getInstance().setAuth(result.id, result.token)
+                appAuth.setAuth(result.id, result.token)
                 _state.value = AuthModelState(loggedIn = true)
             } catch (e: Exception) {
                 when(e) {
@@ -44,7 +50,7 @@ class AuthViewModel: ViewModel() {
         _state.value = AuthModelState()
     }
     fun logout() {
-        AppAuth.getInstance().removeAuth()
+        appAuth.removeAuth()
         _state.value = AuthModelState(notLoggedIn = true)
     }
     fun confirmLogout(manager: FragmentManager) {

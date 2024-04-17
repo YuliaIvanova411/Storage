@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.databinding.FragmentNewPostBinding
 import ru.netology.nmedia.utils.AndroidUtils
@@ -21,18 +20,22 @@ import androidx.core.net.toFile
 import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-//import com.google.android.gms.cast.framework.media.ImagePicker
+import androidx.fragment.app.viewModels
 import ru.netology.nmedia.R
 import ru.netology.nmedia.model.PhotoModel
 import com.github.dhaval2404.imagepicker.ImagePicker
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class NewPostFragment : Fragment() {
 
     companion object {
         var Bundle.textArg: String? by StringArg
     }
 
-    private val viewModel: PostViewModel by activityViewModels()
+    private val viewModel: PostViewModel by viewModels(
+     ownerProducer = ::requireParentFragment,
+    )
 
     private val photoLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()

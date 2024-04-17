@@ -1,16 +1,15 @@
 package ru.netology.nmedia.viewmodel
 
-import android.app.Application
+
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.repository.PostRepository
 import androidx.lifecycle.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import ru.netology.nmedia.db.AppDb
 import ru.netology.nmedia.model.FeedModel
 import ru.netology.nmedia.model.FeedModelState
-import ru.netology.nmedia.repository.PostRepositoryImpl
 import ru.netology.nmedia.util.SingleLiveEvent
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +19,7 @@ import kotlinx.coroutines.flow.map
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.dialog.SignInDialog
 import ru.netology.nmedia.model.PhotoModel
+import javax.inject.Inject
 
 private val empty = Post(
     id = 0,
@@ -32,11 +32,14 @@ private val empty = Post(
     likedByMe = false,
     share = 0,
 )
+@HiltViewModel
+@ExperimentalCoroutinesApi
+class PostViewModel @Inject constructor(
+    private val repository: PostRepository,
+    private val appAuth: AppAuth,
+    ) : ViewModel() {
 
-class PostViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: PostRepository = PostRepositoryImpl(AppDb.getInstance(context = application).postDao())
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val data: LiveData<FeedModel> = AppAuth.getInstance()
+    val data: LiveData<FeedModel> = appAuth
         .authState
         .flatMapLatest {auth ->
             repository.data.map {
@@ -79,7 +82,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         loadPosts()
     }
     fun isAuthorized(manager: FragmentManager): Boolean {
-        return if (AppAuth.getInstance().authState.value != null) {
+        return if (appAuth.authState.value != null) {
             true
         } else {
             SignInDialog().show(manager, SignInDialog.TAG)

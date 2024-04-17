@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
+
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -26,17 +27,22 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.R
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.dialog.SignOutDialog
 import ru.netology.nmedia.viewmodel.AuthViewModel
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class AppActivity : AppCompatActivity(),
 
     SignOutDialog.ConfirmationListener {
-    val viewModel by viewModels<AuthViewModel>()
-
+    @Inject
+    lateinit var appAuth: AppAuth
+    private val viewModel: AuthViewModel by viewModels()
+   // val viewModel by viewModels<AuthViewModel>()
     lateinit var appBarConfiguration: AppBarConfiguration
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,8 +79,7 @@ class AppActivity : AppCompatActivity(),
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-            lifecycleScope
-            checkGoogleApiAvailability()
+
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -98,17 +103,18 @@ class AppActivity : AppCompatActivity(),
                     R.id.signin -> {
                         navHostFragment.navController
                             .navigate(R.id.loginFragment)
+                        appAuth.setAuth(5,"x-token")
                         true
                     }
                     R.id.signup -> {
                         navHostFragment.navController
                             .navigate(R.id.registerFragment)
-                        //AppAuth.getInstance().setAuth(5, "x-token")
+                        appAuth.setAuth(5,"x-token")
                         true
                     }
                     R.id.signout -> {
                         viewModel.confirmLogout(supportFragmentManager)
-                        //AppAuth.getInstance().removeAuth()
+                        appAuth.removeAuth()
                         true
                     }
                     else -> false
@@ -129,9 +135,12 @@ class AppActivity : AppCompatActivity(),
 
             requestPermissions(arrayOf(permission), 1)
         }
-
-        private fun checkGoogleApiAvailability() {
-            with(GoogleApiAvailability.getInstance()) {
+        @Inject
+        private fun checkGoogleApiAvailability(
+            firebaseMessaging: FirebaseMessaging,
+            googleApiAvailability: GoogleApiAvailability
+        ) {
+            with(googleApiAvailability) {
                 val code = isGooglePlayServicesAvailable(this@AppActivity)
                 if (code == ConnectionResult.SUCCESS) {
                     return@with
@@ -148,7 +157,7 @@ class AppActivity : AppCompatActivity(),
                     .show()
             }
 
-            FirebaseMessaging.getInstance().token.addOnSuccessListener {
+            firebaseMessaging.token.addOnSuccessListener {
                 println(it)
             }
         }

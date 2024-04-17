@@ -8,11 +8,12 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.R
 
 import ru.netology.nmedia.databinding.FragmentLoginBinding
 import ru.netology.nmedia.viewmodel.AuthViewModel
-
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
     private val viewModel: AuthViewModel by activityViewModels()
     private lateinit var binding: FragmentLoginBinding
