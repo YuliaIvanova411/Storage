@@ -83,9 +83,9 @@ class AppActivity : AppCompatActivity(),
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModel.data.collect {
+               // viewModel.data.collect {
                     invalidateOptionsMenu()
-                }
+               // }
             }
         }
         addMenuProvider(object : MenuProvider {
@@ -136,7 +136,7 @@ class AppActivity : AppCompatActivity(),
             requestPermissions(arrayOf(permission), 1)
         }
         @Inject
-        private fun checkGoogleApiAvailability(
+        fun checkGoogleApiAvailability(
             firebaseMessaging: FirebaseMessaging,
             googleApiAvailability: GoogleApiAvailability
         ) {

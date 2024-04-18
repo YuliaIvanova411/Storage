@@ -25,6 +25,7 @@ import ru.netology.nmedia.R
 import ru.netology.nmedia.model.PhotoModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @AndroidEntryPoint
 class NewPostFragment : Fragment() {
@@ -33,10 +34,12 @@ class NewPostFragment : Fragment() {
         var Bundle.textArg: String? by StringArg
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val viewModel: PostViewModel by viewModels(
      ownerProducer = ::requireParentFragment,
     )
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val photoLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ){
@@ -48,6 +51,7 @@ class NewPostFragment : Fragment() {
             Toast.makeText(requireContext(),(R.string.pick_photo_error), Toast.LENGTH_SHORT)
         }
     }
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

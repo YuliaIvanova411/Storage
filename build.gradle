@@ -29,7 +29,7 @@ plugins {
 
 subprojects {
     tasks.withType(KotlinCompile) {
-        kotlinOptions.jvmTarget = "17"
+        kotlinOptions.jvmTarget = "1.8"
     }
 }
 task clean(type: Delete) {

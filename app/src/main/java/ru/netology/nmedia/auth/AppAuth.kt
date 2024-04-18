@@ -87,12 +87,12 @@ class AppAuth @Inject constructor(
         }
     }
 }
-//    companion object {
+//   companion object {
 //
-//        private const val KEY_ID = "id"
-//        private const val KEY_TOKEN = "token"
-//        @Volatile
-//        private var instance: AppAuth? = null
+//       private const val KEY_ID = "id"
+//       private const val KEY_TOKEN = "token"
+//       @Volatile
+//       private var instance: AppAuth? = null
 //
 //        fun getInstance() = synchronized(this) {
 //            instance ?: throw IllegalStateException ("getInstance should be called only after initAuth")
@@ -100,7 +100,7 @@ class AppAuth @Inject constructor(
 //
 //        fun initAuth(context: Context) = instance ?: synchronized(this) {
 //            instance ?: AppAuth(context).also { instance = it}
-//        }
+//       }
 //    }
 }
 

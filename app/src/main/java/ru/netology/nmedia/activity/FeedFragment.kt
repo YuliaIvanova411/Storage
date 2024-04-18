@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.adapter.PostListener
@@ -26,8 +27,10 @@ import ru.netology.nmedia.activity.ImageFragment.Companion.attachUrl
 
 @AndroidEntryPoint
 class FeedFragment : Fragment() {
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @SuppressLint("SuspiciousIndentation")
     override fun onCreateView(
         inflater: LayoutInflater,
