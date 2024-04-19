@@ -28,7 +28,7 @@ import ru.netology.nmedia.activity.ImageFragment.Companion.attachUrl
 @AndroidEntryPoint
 class FeedFragment : Fragment() {
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
+    private val viewModel: PostViewModel by activityViewModels()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @SuppressLint("SuspiciousIndentation")
@@ -94,14 +94,14 @@ class FeedFragment : Fragment() {
 
         )
         feedFragmentBinding.list.adapter = adapter
-        viewModel.data.observe(viewLifecycleOwner, { state : FeedModel ->
+        viewModel.data.observe(viewLifecycleOwner) { state: FeedModel ->
             adapter.submitList(state.posts)
             feedFragmentBinding.progress?.isVisible = state.loading
             feedFragmentBinding.errorGroup?.isVisible = state.error
             feedFragmentBinding.emptyText?.isVisible = state.empty
             feedFragmentBinding.internetErrorGroup?.isVisible = state.connectError
             feedFragmentBinding.swipeRefresh?.isRefreshing = state.loading
-        })
+        }
 
         adapter.registerAdapterDataObserver(object  :RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {

@@ -1,5 +1,6 @@
 package ru.netology.nmedia.auth
 
+import android.annotation.SuppressLint
 import android.content.Context
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
@@ -75,6 +76,7 @@ class AppAuth @Inject constructor(
         fun getApiService(): PostApiService
     }
 
+    @SuppressLint("SuspiciousIndentation")
     fun sendPushToken(token: String? = null) {
         CoroutineScope(Dispatchers.Default).launch {
             try {
