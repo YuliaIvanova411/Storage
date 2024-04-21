@@ -20,6 +20,7 @@ import androidx.core.net.toFile
 import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import ru.netology.nmedia.R
 import ru.netology.nmedia.model.PhotoModel
@@ -35,9 +36,7 @@ class NewPostFragment : Fragment() {
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val viewModel: PostViewModel by viewModels(
-     ownerProducer = ::requireParentFragment,
-    )
+    private val viewModel: PostViewModel by activityViewModels()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val photoLauncher = registerForActivityResult(
