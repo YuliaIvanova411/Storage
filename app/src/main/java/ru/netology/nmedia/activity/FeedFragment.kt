@@ -7,14 +7,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.animation.core.animateDecay
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.adapter.PostListener
@@ -94,14 +101,32 @@ class FeedFragment : Fragment() {
 
         )
         feedFragmentBinding.list.adapter = adapter
-        viewModel.data.observe(viewLifecycleOwner) { state: FeedModel ->
-            adapter.submitList(state.posts)
-            feedFragmentBinding.progress?.isVisible = state.loading
-            feedFragmentBinding.errorGroup?.isVisible = state.error
-            feedFragmentBinding.emptyText?.isVisible = state.empty
-            feedFragmentBinding.internetErrorGroup?.isVisible = state.connectError
-            feedFragmentBinding.swipeRefresh?.isRefreshing = state.loading
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.data.collectLatest (adapter::submitData)
+                }
+            }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                adapter.loadStateFlow.collectLatest { state ->
+                    feedFragmentBinding.swipeRefresh?.isRefreshing =
+                        state.refresh is LoadState.Loading ||
+                                state.prepend is LoadState.Loading ||
+                                state.append is LoadState.Loading
+                }
+            }
         }
+
+//        viewModel.data.observe(viewLifecycleOwner) { state: FeedModel ->
+//           (adapter::submitData)
+//           feedFragmentBinding.progress?.isVisible = state.loading
+//         feedFragmentBinding.errorGroup?.isVisible = state.error
+//          feedFragmentBinding.emptyText?.isVisible = state.empty
+//           feedFragmentBinding.internetErrorGroup?.isVisible = state.connectError
+//           feedFragmentBinding.swipeRefresh?.isRefreshing = state.loading
+//        }
 
         adapter.registerAdapterDataObserver(object  :RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
@@ -111,17 +136,16 @@ class FeedFragment : Fragment() {
             }
         })
 
-        feedFragmentBinding.retryButton?.setOnClickListener {
-            viewModel.loadPosts()
-        }
-        feedFragmentBinding.swipeRefresh?.setOnRefreshListener {
-            viewModel.refreshPosts()
-        }
-        viewModel.newerCount.observe(viewLifecycleOwner) {
-            if (it != 0) {
-                feedFragmentBinding.loadNew?.visibility = View.VISIBLE
-            }
-        }
+//        feedFragmentBinding.retryButton?.setOnClickListener {
+//            viewModel.loadPosts()
+//        }
+        feedFragmentBinding.swipeRefresh?.setOnRefreshListener (adapter::refresh)
+
+//        viewModel.newerCount.observe(viewLifecycleOwner) {
+//            if (it != 0) {
+//                feedFragmentBinding.loadNew?.visibility = View.VISIBLE
+//            }
+//        }
         feedFragmentBinding.loadNew?.setOnClickListener {
             viewModel.readNew()
             feedFragmentBinding.loadNew.visibility = View.GONE

@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.repository.PostRepository
 import androidx.lifecycle.*
+import androidx.paging.PagingData
+import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.model.FeedModel
@@ -14,8 +16,11 @@ import ru.netology.nmedia.util.SingleLiveEvent
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.switchMap
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.dialog.SignInDialog
 import ru.netology.nmedia.model.PhotoModel
@@ -39,17 +44,15 @@ class PostViewModel @Inject constructor(
     private val appAuth: AppAuth,
     ) : ViewModel() {
 
-    val data: LiveData<FeedModel> = appAuth
-        .authState
-        .flatMapLatest {auth ->
+    val data: Flow<PagingData<Post>> = appAuth.authState
+        .flatMapLatest { (myId, _) ->
             repository.data.map {
-                posts -> FeedModel(
-                posts.map { it.copy(ownedByMe = auth.id == it.authorId) },
-                posts.isEmpty()
-            )
+                posts ->
+                posts.map { it.copy(ownedByMe = it.authorId == myId) }
+
         }
         }
-        .asLiveData(Dispatchers.Default)
+        .flowOn(Dispatchers.Default)
 
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState :LiveData<FeedModelState>
@@ -65,11 +68,11 @@ class PostViewModel @Inject constructor(
     val photo: LiveData<PhotoModel?>
         get() = _photo
 
-    val newerCount: LiveData<Int> = data.switchMap {
-        val id = it.posts.firstOrNull()?.id ?: 0L
-        repository.getNewerCount(id)
-            .asLiveData(Dispatchers.Default)
-    }
+//    val newerCount: Flow<Int> = data.flatMapLatest<PagingData<Post>, Int> {
+//        val id = it.posts.firstOrNull()?.id ?: 0L
+//        repository.getNewerCount(id)
+//            .flowOn(Dispatchers.Default)
+//    }
 
     fun setPhoto(photoModel: PhotoModel) {
         _photo.value = photoModel
