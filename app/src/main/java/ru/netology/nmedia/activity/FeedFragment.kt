@@ -18,6 +18,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
@@ -127,7 +128,14 @@ class FeedFragment : Fragment() {
 //           feedFragmentBinding.internetErrorGroup?.isVisible = state.connectError
 //           feedFragmentBinding.swipeRefresh?.isRefreshing = state.loading
 //        }
-
+        viewModel.dataState.observe(viewLifecycleOwner) { state ->
+            feedFragmentBinding.swipeRefresh?.isRefreshing = state.refreshing
+            if (state.error) {
+                Snackbar.make(feedFragmentBinding.root, R.string.error_loading, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.retry_loading) { viewModel.loadPosts() }
+                    .show()
+            }
+        }
         adapter.registerAdapterDataObserver(object  :RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                     if (positionStart == 0) {

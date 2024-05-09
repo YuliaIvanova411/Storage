@@ -43,7 +43,7 @@ class PostRepositoryImpl @Inject constructor(
         while (true) {
             delay(10_000)
             try {
-                val response = apiService.getNewer(id)
+                val response = apiService.getNewerCount(id)
                 val posts = response.body().orEmpty()
                 dao.insert(posts.toEntity().map {
                     it.copy(hidden = true)
@@ -114,8 +114,8 @@ class PostRepositoryImpl @Inject constructor(
 
 
     override suspend fun likeById(id: Long) {
-        val likePost = dao.getById(id)
-        dao.likeById(likePost.id)
+//        val likePost = dao.getById(id)
+//        dao.likeById(likePost.id)
         try {
             val response = apiService.likeById(id)
             if (!response.isSuccessful) {
@@ -123,10 +123,10 @@ class PostRepositoryImpl @Inject constructor(
             }
 
         } catch (e : IOException) {
-            dao.likeById(likePost.id)
+          //  dao.likeById(likePost.id)
             throw NetworkError
         } catch (e : Exception) {
-            dao.likeById(likePost.id)
+          //  dao.likeById(likePost.id)
             throw UnknownAppError
         }
     }
