@@ -24,6 +24,7 @@ import ru.netology.nmedia.api.PostApiService
 import ru.netology.nmedia.dto.Attachment
 import ru.netology.nmedia.dto.Media
 import ru.netology.nmedia.enumeration.AttachmentType
+import ru.netology.nmedia.error.AppError
 import java.io.File
 import javax.inject.Inject
 
@@ -43,19 +44,24 @@ class PostRepositoryImpl @Inject constructor(
         while (true) {
             delay(10_000)
             try {
-                val response = apiService.getNewerCount(id)
-                val posts = response.body().orEmpty()
-                dao.insert(posts.toEntity().map {
+                val response = apiService.getNewer(id)
+                if (!response.isSuccessful) {
+                    throw ApiError(response.code(), response.message())
+                }
+                val body = response.body() ?: throw ApiError(response.code(), response.message())
+                dao.insert(body.toEntity().map {
                     it.copy(hidden = true)
                 })
-                emit(posts.size)
+                emit(body.size)
             } catch (e: CancellationException) {
                 throw e
-            }   catch (e: Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
+        .flowOn(Dispatchers.Default)
+
     override suspend fun showNewPosts() {
         dao.readNew()
     }

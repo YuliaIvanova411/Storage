@@ -7,6 +7,7 @@ import retrofit2.http.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import ru.netology.nmedia.dto.Media
+import ru.netology.nmedia.dto.NewerCount
 import ru.netology.nmedia.dto.PushToken
 import ru.netology.nmedia.model.AuthModel
 
@@ -26,7 +27,7 @@ interface PostApiService {
     suspend fun getNewer(@Path("id")id: Long): Response<List<Post>>
 
     @GET("posts/{id}/newer-count")
-    suspend fun getNewerCount(@Path("id")id: Long): Response<List<Post>>
+    suspend fun getNewerCount(@Path("id")id: Long): Response<NewerCount>
 
     @GET("posts/{id}/before")
     suspend fun getBefore(@Path("id")id: Long, @Query("count") count : Int): Response<List<Post>>
