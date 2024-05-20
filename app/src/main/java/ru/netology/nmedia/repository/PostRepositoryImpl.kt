@@ -44,15 +44,12 @@ class PostRepositoryImpl @Inject constructor(
         while (true) {
             delay(10_000)
             try {
-                val response = apiService.getNewer(id)
+                val response = apiService.getNewerCount(id)
                 if (!response.isSuccessful) {
                     throw ApiError(response.code(), response.message())
                 }
                 val body = response.body() ?: throw ApiError(response.code(), response.message())
-                dao.insert(body.toEntity().map {
-                    it.copy(hidden = true)
-                })
-                emit(body.size)
+                emit(body.count.toInt())
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
