@@ -23,8 +23,8 @@ class DbModule {
     ): AppDb = Room.databaseBuilder(context, AppDb::class.java,"app.db")
         .fallbackToDestructiveMigration()
         .build()
-    @Provides
-    fun providePostDao(
-        appDb: AppDb
-    ): PostDao = appDb.postDao()
+//    @Provides
+//    fun providePostDao(
+//        appDb: AppDb
+//    ): PostDao = appDb.postDao()
 }
