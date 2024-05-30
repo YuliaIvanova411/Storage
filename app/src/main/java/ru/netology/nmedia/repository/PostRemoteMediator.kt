@@ -75,9 +75,11 @@ class PostRemoteMediator(
                 LoadType.PREPEND -> Unit
 
                 LoadType.APPEND -> {
+                    postRemoteKeyDao.insert(
                     PostRemoteKeyEntity(
                         PostRemoteKeyEntity.KeyType.BEFORE,
                         body.last().id,
+                    )
                     )
                 }
 
