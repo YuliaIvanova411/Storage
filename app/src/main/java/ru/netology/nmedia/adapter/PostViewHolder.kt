@@ -4,11 +4,14 @@ package ru.netology.nmedia.adapter
 import android.view.View
 import android.widget.PopupMenu
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.R
+import ru.netology.nmedia.databinding.CardAdBinding
 import ru.netology.nmedia.databinding.CardPostBinding
+import ru.netology.nmedia.dto.Ad
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.holder.load
 import ru.netology.nmedia.holder.loadAttachment
@@ -112,5 +115,13 @@ class PostViewHolder(
                 listener.onAttachment(post)
             }
         }
+    }
+}
+
+class AdViewHolder(
+    private val binding: CardAdBinding,
+): ViewHolder(binding.root) {
+    fun bind(ad:Ad) {
+        binding.image.load("${BuildConfig.BASE_URL}/media/${ad.image}")
     }
 }

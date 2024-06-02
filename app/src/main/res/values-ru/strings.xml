@@ -56,5 +56,6 @@
     <string name="signOut" >Выйти</string>
     <string name="notification_new_post" >Новый пост</string>
     <string name="notification_default" >Уведомление</string>
+    <string name="ad_description">Описание рекламы</string>
 
 </resources>

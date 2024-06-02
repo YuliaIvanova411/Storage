@@ -56,7 +56,8 @@
     <string name="confirm_signOut" >Confirm sign out</string>
     <string name="signOut" >Sign out</string>
     <string name="notification_new_post" >New Post</string>
-    <string name="notification_default" >Notification</string><![CDATA[
+    <string name="notification_default" >Notification</string>
+    <string name="ad_description" >Ad description</string><![CDATA[
 
 
 
