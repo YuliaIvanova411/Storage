@@ -92,5 +92,4 @@ class PostRemoteMediator(
         return MediatorResult.Error(e)
         }
     }
-
 }

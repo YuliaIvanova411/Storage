@@ -21,7 +21,6 @@ import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import ru.netology.nmedia.R
 import ru.netology.nmedia.model.PhotoModel
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -108,31 +107,13 @@ class NewPostFragment : Fragment() {
         }
 
         binding.content.requestFocus()
-        //val intent = Intent()
-        //binding.content.setText(intent.getStringExtra(Intent.EXTRA_TEXT))
-//        binding.ok.setOnClickListener {
-//
-//            val text = binding.content.text.toString()
-//            if (!text.isBlank()){
-//                val content = binding.content.text.toString()
-//                viewModel.changeContent(content)
-//                viewModel.save()
-//                findNavController().navigateUp()
-//            }
-            viewModel.postCreated.observe(viewLifecycleOwner) {
+
+        viewModel.postCreated.observe(viewLifecycleOwner) {
 
                 findNavController().navigateUp()
                 viewModel.loadPosts()
             }
 
-
-
-//        binding.cancelButton.setOnClickListener{
-//            //val intent = Intent()
-//            //(Activity.RESULT_CANCELED)
-//            AndroidUtils.hideKeyboard(requireView())
-//            findNavController().navigateUp()
-//        }
         return binding.root
     }
 

@@ -7,13 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import ru.netology.nmedia.api.PostApiService
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.dialog.SignOutDialog
 import ru.netology.nmedia.error.ApiError
 import ru.netology.nmedia.model.AuthModelState
 import ru.netology.nmedia.repository.AuthRepository
-import ru.netology.nmedia.repository.AuthRepositoryImpl
 import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
@@ -25,7 +23,6 @@ class AuthViewModel @Inject constructor(
     val authenticated: Boolean
         get() = appAuth.authState.value.id != 0L
 
-   // private val repository: AuthRepository = AuthRepositoryImpl()
     private val _state = MutableLiveData<AuthModelState>()
     val state: LiveData<AuthModelState>
         get() = _state

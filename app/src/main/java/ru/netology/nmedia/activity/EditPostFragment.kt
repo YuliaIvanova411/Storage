@@ -34,7 +34,6 @@ class EditPostFragment : Fragment() {
         arguments?.edit?.let(binding.content::setText)
         binding.content.setText(arguments?.getString("editedText"))
 
-       // binding.content.setText(intent.getStringExtra(Intent.EXTRA_TEXT))
         binding.ok.setOnClickListener {
             val text = binding.content.text.toString()
             if (text.isBlank()) {

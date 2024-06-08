@@ -4,7 +4,6 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.PagingSource
 import androidx.paging.insertSeparators
 import androidx.paging.map
 import kotlinx.coroutines.Dispatchers
@@ -102,9 +101,6 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-
-
-
     override suspend fun save(post: Post) {
         try {
             val response = apiService.save(post)
@@ -138,10 +134,7 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-
     override suspend fun likeById(id: Long) {
-//        val likePost = dao.getById(id)
-//        dao.likeById(likePost.id)
         try {
             val response = apiService.likeById(id)
             if (!response.isSuccessful) {
@@ -175,8 +168,6 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-
-
     override suspend fun getById(id: Long) {
         dao.getById(id)
         try {
@@ -184,8 +175,6 @@ class PostRepositoryImpl @Inject constructor(
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-
-
         } catch (e : IOException) {
             throw NetworkError
         } catch (e : Exception) {
@@ -220,7 +209,6 @@ class PostRepositoryImpl @Inject constructor(
         }
         return response.body() ?: throw ApiError(response.code(), response.message())
     }
-
   }
 
 

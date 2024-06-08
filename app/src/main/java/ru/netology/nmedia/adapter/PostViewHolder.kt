@@ -4,9 +4,7 @@ package ru.netology.nmedia.adapter
 import android.view.View
 import android.widget.PopupMenu
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.bumptech.glide.Glide
 import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardAdBinding
@@ -20,11 +18,7 @@ interface PostListener {
     fun onRemove(post: Post)
     fun onEdit (post: Post)
     fun onLike (post: Post)
-
     fun onAttachment(post: Post)
-
-   // fun onShare (post: Post)
-
     fun onPlay(post: Post)
 }
 
@@ -47,7 +41,6 @@ class PostViewHolder(
 
         else -> "wtf"
     }
-
     fun bind(post: Post) {
         with(binding) {
             author.text = post.author
@@ -79,11 +72,6 @@ class PostViewHolder(
             like.setOnClickListener {
                 listener.onLike(post)
             }
-
-//            share.setOnClickListener {
-//                listener.onShare(post)
-//            }
-
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
                     inflate(R.menu.post_options)
@@ -97,7 +85,6 @@ class PostViewHolder(
                                 listener.onEdit(post)
                                 true
                             }
-
                             else -> false
                         }
                     }
@@ -110,7 +97,6 @@ class PostViewHolder(
             } else {
                 attachment.visibility = View.GONE
             }
-
             attachment.setOnClickListener {
                 listener.onAttachment(post)
             }

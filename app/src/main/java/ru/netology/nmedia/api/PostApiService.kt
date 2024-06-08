@@ -79,9 +79,3 @@ interface PostApiService {
     ): Response<AuthModel>
 
 }
-
-//object ApiService {
-//    val api: PostApiService by lazy {
-//        retrofit.create(PostApiService::class.java)
-//    }
-//}

@@ -12,7 +12,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
-
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -42,7 +41,6 @@ class AppActivity : AppCompatActivity(),
     @Inject
     lateinit var appAuth: AppAuth
     private val viewModel: AuthViewModel by viewModels()
-   // val viewModel by viewModels<AuthViewModel>()
     lateinit var appBarConfiguration: AppBarConfiguration
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,9 +81,7 @@ class AppActivity : AppCompatActivity(),
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-               // viewModel.data.collect {
                     invalidateOptionsMenu()
-               // }
             }
         }
         addMenuProvider(object : MenuProvider {

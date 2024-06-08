@@ -7,11 +7,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.animation.core.animateDecay
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -28,7 +25,6 @@ import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.adapter.PostListener
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.dto.Post
-import ru.netology.nmedia.model.FeedModel
 import ru.netology.nmedia.viewmodel.PostViewModel
 import ru.netology.nmedia.activity.ImageFragment.Companion.attachUrl
 import ru.netology.nmedia.adapter.PostLoadingStateAdapter
@@ -86,19 +82,6 @@ class FeedFragment : Fragment() {
                     }
                 }
 
-//                override fun onShare(post: Post) {
-//                    val intent = Intent().apply {
-//                        action = Intent.ACTION_SEND
-//                        putExtra(Intent.EXTRA_TEXT, post.content)
-//                        type = "text/plain"
-//                    }
-//                    val startIntent =
-//                        Intent.createChooser(intent, getString(R.string.chooser_share_post))
-//                    startActivity(startIntent)
-//                    viewModel.shareById(post.id)
-//
-//                }
-
             }
 
         )
@@ -118,20 +101,11 @@ class FeedFragment : Fragment() {
                 adapter.loadStateFlow.collectLatest { state ->
                     feedFragmentBinding.swipeRefresh?.isRefreshing =
                         state.refresh is LoadState.Loading
-//                                state.prepend is LoadState.Loading ||
-//                                state.append is LoadState.Loading
+
                 }
             }
         }
 
-//        viewModel.data.observe(viewLifecycleOwner) { state: FeedModel ->
-//           (adapter::submitData)
-//           feedFragmentBinding.progress?.isVisible = state.loading
-//         feedFragmentBinding.errorGroup?.isVisible = state.error
-//          feedFragmentBinding.emptyText?.isVisible = state.empty
-//           feedFragmentBinding.internetErrorGroup?.isVisible = state.connectError
-//           feedFragmentBinding.swipeRefresh?.isRefreshing = state.loading
-//        }
         viewModel.dataState.observe(viewLifecycleOwner) { state ->
             feedFragmentBinding.swipeRefresh?.isRefreshing = state.refreshing
             if (state.error) {
@@ -148,21 +122,12 @@ class FeedFragment : Fragment() {
             }
         })
 
-//        feedFragmentBinding.retryButton?.setOnClickListener {
-//            viewModel.loadPosts()
-//        }
         feedFragmentBinding.swipeRefresh?.setOnRefreshListener (adapter::refresh)
 
-//        viewModel.newerCount.observe(viewLifecycleOwner) {
-//            if (it != 0) {
-//                feedFragmentBinding.loadNew?.visibility = View.VISIBLE
-//            }
-//        }
         feedFragmentBinding.loadNew?.setOnClickListener {
             viewModel.readNew()
             feedFragmentBinding.loadNew.visibility = View.GONE
         }
-
 
         feedFragmentBinding.add.setOnClickListener {
             if (viewModel.isAuthorized(childFragmentManager)) {
@@ -171,7 +136,6 @@ class FeedFragment : Fragment() {
                 .navigate(R.id.loginFragment)
 
         }
-
         return feedFragmentBinding.root
     }
 

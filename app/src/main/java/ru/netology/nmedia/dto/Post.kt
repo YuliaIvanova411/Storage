@@ -26,6 +26,5 @@ data class Ad(
 ) : FeedItem
 data class Attachment(
     val url: String,
-    //   val description: String?,
     val type: AttachmentType,
 )

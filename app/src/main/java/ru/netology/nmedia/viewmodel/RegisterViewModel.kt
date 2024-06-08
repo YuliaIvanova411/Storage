@@ -4,18 +4,14 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.auth.AppAuth
-import ru.netology.nmedia.model.AuthModel
 import ru.netology.nmedia.model.AuthModelState
 import ru.netology.nmedia.model.MediaModel
 import ru.netology.nmedia.repository.AuthRepository
-import ru.netology.nmedia.repository.AuthRepositoryImpl
 import java.io.File
 import javax.inject.Inject
 
@@ -26,10 +22,6 @@ class RegisterViewModel @Inject constructor(
     private val appAuth: AppAuth,
 ): ViewModel() {
     val data = appAuth.authState
-
-
-  //  private val repository: AuthRepository = AuthRepositoryImpl()
-
     private val _state = MutableLiveData<AuthModelState>()
     val state: LiveData<AuthModelState>
         get() = _state

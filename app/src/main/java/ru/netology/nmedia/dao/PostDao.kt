@@ -46,12 +46,8 @@ interface PostDao {
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         suspend fun insert(posts: List<PostEntity>)
 
-
         @Query("UPDATE PostEntity SET content = :text WHERE id = :id")
         fun updateContentById(id: Long, text: String)
-
-//        fun save(post: PostEntity) =
-//                if (post.id == 0L) insert(post) else updateContentById(post.id, post.content)
 
         @Query("DELETE FROM PostEntity WHERE id = :id")
         suspend fun removeById(id: Long)
@@ -66,6 +62,4 @@ interface PostDao {
         """
         )
         suspend fun shareById(id: Long)
-
-
     }

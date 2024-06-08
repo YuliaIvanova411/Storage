@@ -3,7 +3,6 @@ package ru.netology.nmedia.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardAdBinding
@@ -23,8 +22,6 @@ class PostAdapter(
             is Post -> R.layout.card_post
             null -> error("unknown item type")
         }
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
        when (viewType) {
            R.layout.card_post -> {
@@ -51,7 +48,6 @@ class PostAdapter(
         else -> error("unknown view type: $viewType")
        }
 
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         getItem(position)?.let {
             when (it) {
@@ -61,5 +57,4 @@ class PostAdapter(
             }
         }
     }
-
 }

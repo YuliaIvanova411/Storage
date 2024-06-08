@@ -3,7 +3,6 @@ package ru.netology.nmedia.dialog
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import androidx.compose.material3.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.R
